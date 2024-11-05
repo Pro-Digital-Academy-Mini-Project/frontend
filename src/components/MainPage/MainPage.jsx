@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Card from 'react-bootstrap/Card';;
-import { getRooms } from '../../lib/api/bringRooms';
+import { getRooms } from '../../lib/api/room';
 import MakeRoomModal from './MakeRoomModal';
+import { useNavigate } from 'react-router-dom';
 
 export default function MainPage() {
   const [roomArr, setRoomArr] = useState([]);
   const [show, setShow] = useState(false);
-
+  const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -19,7 +20,7 @@ export default function MainPage() {
   },[])
 
   const moveToRoom = (id) => { //room id 전달
-    console.log(`${id} 방으로 이동`)
+    navigate(`/room/${id}`)
   }
   return (
     <>

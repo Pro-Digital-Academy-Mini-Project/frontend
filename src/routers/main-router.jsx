@@ -5,6 +5,7 @@ import LoginPage from '../components/LoginPage/LoginPage';
 import SignUpPage from '../components/SignUpPage/SignUpPage';
 import ChattingPage from '../components/ChattingPage/ChattingPage';
 import BoardLayout from '../routes/detail/layout';
+import RoomPage from '../components/RoomPage/RoomPage';
 
 const router = createBrowserRouter([
   {
@@ -14,8 +15,18 @@ const router = createBrowserRouter([
       { path: '/', element: <MainPage /> }, // index: true를 제거하고 path: '/'로 설정
       { path: 'signup', element: <SignUpPage /> },
       { path: 'login', element: <LoginPage /> },
+  {
+    path: 'room/:id',
+    element: <RoomPage />,
+  },
+  {
+    path: 'chatting/:roomId',
+    element: <ChattingPage />,
+    index: true,
+  }
     ],
   },
+
 ]);
 
 export default router;
