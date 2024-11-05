@@ -18,7 +18,7 @@ export default function VideoPage() {
     };
   return (
     <div>VideoPage
-        <div>
+        <div id="ytplayer">
             <YouTube
                 videoId={'guzwcFTuDFw'}
                 onReady={onReady} // 플레이어가 준비되면 호출
