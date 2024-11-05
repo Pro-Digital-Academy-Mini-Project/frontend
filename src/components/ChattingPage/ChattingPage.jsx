@@ -1,60 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { useParams } from 'react-router-dom';
 
-let socket = io(`http://localhost:3000/`,
-    {transports: ['websocket', 'polling']}
-  );
+// 소켓 연결은 컴포넌트 외부에서 한 번만 생성
+const socket = io("http://localhost:3000", {
+  transports: ["websocket", "polling"],
+});
 
 export default function ChattingPage() {
-    const [message, setMessage] = useState('');
+  const params = useParams();
+  const roomId = params.roomId || "room1";
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState(null);
 
   useEffect(() => {
-    socket.on('receiveMessage', (msg) => {
+    // props로 전달받은 roomId 사용
+    socket.emit("joinRoom", roomId);
+    setCurrentRoom(roomId);
+
+    // 메시지 수신 리스너
+    socket.on("receiveMessage", (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
 
+    // 컴포넌트 언마운트 시 정리
     return () => {
-      socket.off('receiveMessage');
+      if (currentRoom) {
+        socket.emit("leaveRoom", currentRoom);
+      }
+      socket.off("receiveMessage");
     };
-  }, []);
+  }, [roomId, currentRoom]); // roomId를 의존성 배열에 추가
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (message) {
-      socket.emit('sendMessage', message);
-      setMessage('');
+    if (message && currentRoom) {
+      socket.emit("sendMessage", socket.id + " : " + message);
+      setMessage("");
     }
   };
-// // 방 전환 함수
-// function switchRoom(newRoom) {
-//   if (socket) {
-//     socket.disconnect(); // 기존 소켓 연결 해제
-//   }
-//   currentRoom = newRoom;
-//   socket = io(`http://localhost:3000/${currentRoom}`); // 새 방에 연결
-
-//   // 메시지 수신 설정
-//   socket.on('receiveMessage', (msg) => {
-//     console.log(`[${currentRoom}] 받은 메시지:`, msg);
-//   });
-// }
-
-// // 메시지 전송 함수
-// function sendMessage(message) {
-//   socket.emit('sendMessage', message);
-// }
-
-// // 기본 방에서 메시지 수신
-// socket.on('receiveMessage', (msg) => {
-//   console.log(`[${currentRoom}] 받은 메시지:`, msg);
-// });
 
   return (
     <div>
-      <h1>Chat Room</h1>
+      <h1>Chat Room: {currentRoom}</h1>
       <h3>**websocket 서버를 켰는지 확인하세요</h3>
-      <div style={{ border: '1px solid #ccc', height: '300px', overflowY: 'scroll' }}>
+      <div
+        style={{
+          border: "1px solid #ccc",
+          height: "300px",
+          overflowY: "scroll",
+        }}
+      >
         {messages.map((msg, index) => (
           <div key={index}>{msg}</div>
         ))}
@@ -69,5 +66,5 @@ export default function ChattingPage() {
         <button type="submit">Send</button>
       </form>
     </div>
-  )
+  );
 }
