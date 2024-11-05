@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-let socket = io(`http://localhost:3000/`,
+let socket = io(`http://localhost:3000/room1`,
     {transports: ['websocket', 'polling']}
   );
 
@@ -13,6 +13,7 @@ export default function ChattingPage() {
     socket.on('receiveMessage', (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
+    console.log(socket);
 
     return () => {
       socket.off('receiveMessage');
