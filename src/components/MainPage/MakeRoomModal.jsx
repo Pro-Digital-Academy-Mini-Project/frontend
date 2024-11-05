@@ -2,18 +2,24 @@ import React, {useState} from 'react'
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { bringVideo } from '../../lib/api/bringVideo';
+import { postRooms } from '../../lib/api/room';
+import { useNavigate } from 'react-router-dom';
 
 export default function MakeRoomModal(props) {
-  const [roomInfo, setRoomInfo] = useState({});
+  const [roomInfo, setRoomInfo] = useState({name:'', password:'', is_private:false});
   const [video, setVideo] = useState({});
+  const navigate = useNavigate();
 
-  const makeRoom = () => {
+  const makeRoom = async() => {
     //video post => video id
     //room post => video id와 user id와 room 정보를 등록
     //해당 room page로 이동
-    bringVideo(1)
     console.log('방 만들기')
+    const response = await postRooms(roomInfo)
+    if (response._id){
+        navigate(`/room/${response._id}`)
+    }
+    
   }
 
   return (
@@ -39,6 +45,10 @@ export default function MakeRoomModal(props) {
             <Form.Control
                 type="text"
                 placeholder="방 제목을 입력해주세요"
+                onChange={(e)=>{
+                    roomInfo.name = e.target.value;
+                    setRoomInfo({ ...roomInfo })
+                }}
             />
             </Form.Group>
             <Form.Group>
@@ -46,11 +56,20 @@ export default function MakeRoomModal(props) {
                 type="switch"
                 id="private-switch"
                 label="공개/비공개"
+                onChange={()=>{
+                    roomInfo.is_private= !roomInfo.is_private;
+                    setRoomInfo({ ...roomInfo })
+                }}
             />
             <Form.Label>Password</Form.Label>
             <Form.Control
                 type="password"
                 placeholder="비밀번호를 입력해주세요"
+                disabled={!roomInfo.is_private}
+                onChange={(e)=>{
+                    roomInfo.password = e.target.value;
+                    setRoomInfo({ ...roomInfo })
+                }}
             />
             </Form.Group>
         </Form>
