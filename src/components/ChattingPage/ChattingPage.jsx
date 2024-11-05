@@ -58,11 +58,18 @@ export default function ChattingPage() {
       </div>
       <hr />
       <div>
-        <p>Chat Room: {currentRoom}</p>
-        <p>현재 접속자수:{roomUserCount}</p>
+        <p>{currentRoom}</p>
+        <p>
+          <img src="../../../public/img/user-icon.png" width="15" />
+          &nbsp;{roomUserCount}
+        </p>
       </div>
       <hr />
-      <Nav variant="underline" onSelect={(selectedKey) => setChatMode(selectedKey)}>
+      <Nav
+        variant="underline"
+        defaultActiveKey={ChatMode.TIMELINE}
+        onSelect={(selectedKey) => setChatMode(selectedKey)}
+      >
         <Nav.Item>
           <Nav.Link eventKey={ChatMode.TIMELINE}>타임라인</Nav.Link>
         </Nav.Item>
