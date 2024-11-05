@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: '/chatting',
+    path: '/chatting/:roomId',
     element: <ChattingPage />,
     index: true,
   }

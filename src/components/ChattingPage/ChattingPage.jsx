@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { useParams } from 'react-router-dom';
 
 // 소켓 연결은 컴포넌트 외부에서 한 번만 생성
 const socket = io("http://localhost:3000", {
   transports: ["websocket", "polling"],
 });
 
-export default function ChattingPage({ roomId = "room1" }) {
+export default function ChattingPage() {
+  const params = useParams();
+  const roomId = params.roomId || "room1";
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
