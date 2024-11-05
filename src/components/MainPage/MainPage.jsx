@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/Card';;
+import { getRooms } from '../../lib/api/bringRooms';
+import MakeRoomModal from './MakeRoomModal';
 
 export default function MainPage() {
-  const [RoomArr, setRoomArr] = useState({})
+  const [roomArr, setRoomArr] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(()=>{
-    //Todo
-    //1. Room data 받아오기
-    //2. Room data -> Video key를 통해 Video url 받아오기
-    //3. RoomArr에 데이터 넣기
+    const bringRooms = async() => {
+      const data = await getRooms();
+      setRoomArr(data)
+    }
+    bringRooms()
   },[])
 
-  const makeRoom = () => {
-    console.log('방 만들기 버튼 클릭')
-  }
-  const moveToRoom = (id) => {
+  const moveToRoom = (id) => { //room id 전달
     console.log(`${id} 방으로 이동`)
   }
   return (
@@ -25,22 +28,31 @@ export default function MainPage() {
         <h2>user_nickname의 함께 볼 때 더 즐거운 순간들</h2>
         <div>
           <input type='text' placeholder='방 검색하기'/>
-          <button onClick={()=>{makeRoom}}>방 만들기</button>
+          <button onClick={()=>{handleShow()}}>방 만들기</button>
         </div>
       </div>
 
       {/** Room List */}
       <div>
-        <Card style={{ width: '18rem' }} onClick={()=>{moveToRoom(1)}}>
-          <Card.Img variant="top" src="" />
-          <Card.Body>
-            <Card.Title>Room Title</Card.Title>
-            <Card.Text>
-              Youtube Url
-            </Card.Text>
-            {/* {isPrivate ? ('private') : 'none'} */}
-          </Card.Body>
-        </Card>
+        {roomArr.map((el, id)=>{
+          return(
+            <Card key={id} style={{ width: '18rem' }} onClick={()=>{moveToRoom(el._id)}}>
+              <Card.Img variant="top" src="" />
+              <Card.Body>
+                <Card.Title>{el.room_name}</Card.Title>
+                <Card.Text>
+                  {el.video_id.title}
+                </Card.Text>
+                {el.is_private ? ('private') : ''} {/** private은 자물쇠 아이콘 가져오기 */}
+              </Card.Body>
+            </Card> 
+          )
+        })}
+      </div>
+
+      {/** Make Room Modal */}
+      <div>
+        <MakeRoomModal show={show} handleClose={handleClose}/>
       </div>
     </>
   )
