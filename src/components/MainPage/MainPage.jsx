@@ -38,11 +38,12 @@ export default function MainPage() {
         {roomArr.map((el, id)=>{
           return(
             <Card key={id} style={{ width: '18rem' }} onClick={()=>{moveToRoom(el._id)}}>
-              <Card.Img variant="top" src="" />
+              <Card.Img variant="top" src={`https://img.youtube.com/vi/${el.video_id.video_id}/0.jpg`} />
               <Card.Body>
                 <Card.Title>{el.room_name}</Card.Title>
                 <Card.Text>
-                  {el.video_id.title}
+                  {/** user name 넣기 */}
+                  
                 </Card.Text>
                 {el.is_private ? ('private') : ''} {/** private은 자물쇠 아이콘 가져오기 */}
               </Card.Body>
