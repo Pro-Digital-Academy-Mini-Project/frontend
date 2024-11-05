@@ -14,6 +14,7 @@ export default function ChattingPage() {
   const roomId = params.roomId || "room1";
   const [messages, setMessages] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
+  const [roomUserCount, setRoomUserCount] = useState(0);
 
   useEffect(() => {
     // props로 전달받은 roomId 사용
@@ -24,6 +25,10 @@ export default function ChattingPage() {
     socket.on("receiveMessage", (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
+    socket.on("roomUserCount", (msg) => {
+      setRoomUserCount(msg);
+      console.log("접속자수:",msg);
+    })
 
     // 컴포넌트 언마운트 시 정리
     return () => {
@@ -38,6 +43,8 @@ export default function ChattingPage() {
     <div>
       <h1>Chat Room: {currentRoom}</h1>
       <h3>**websocket 서버를 켰는지 확인하세요</h3>
+      <hr/>
+      <p>현재 접속자수:{roomUserCount}</p>
       <hr/>
         <TimelineChat messages={messages}/>
         <MessageInput currentRoom={currentRoom}/>
