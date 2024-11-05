@@ -58,11 +58,18 @@ export default function ChattingPage() {
       </div>
       <hr />
       <div>
-        <p>Chat Room: {currentRoom}</p>
-        <p>현재 접속자수:{roomUserCount}</p>
+        <p>{currentRoom}</p>
+        <p>
+          <img src="../../../public/img/user-icon.png" width="15" />
+          &nbsp;{roomUserCount}
+        </p>
       </div>
       <hr />
-      <Nav activeKey="/home" onSelect={(selectedKey) => setChatMode(selectedKey)}>
+      <Nav
+        variant="underline"
+        defaultActiveKey={ChatMode.TIMELINE}
+        onSelect={(selectedKey) => setChatMode(selectedKey)}
+      >
         <Nav.Item>
           <Nav.Link eventKey={ChatMode.TIMELINE}>타임라인</Nav.Link>
         </Nav.Item>
@@ -70,8 +77,8 @@ export default function ChattingPage() {
           <Nav.Link eventKey={ChatMode.TOTAL}>전체</Nav.Link>
         </Nav.Item>
       </Nav>
-      {chatMode === ChatMode.TIMELINE ? <TimelineChat messages={messages} /> : <TotalChat />}
-      <MessageInput currentRoom={currentRoom} />
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat messages={messages} /> : <TotalChat messages={messages} />}
+      <MessageInput currentRoom={currentRoom} chatMode={chatMode} />
     </div>
   );
 }
