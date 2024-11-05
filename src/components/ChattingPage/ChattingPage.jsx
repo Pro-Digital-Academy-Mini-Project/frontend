@@ -33,7 +33,7 @@ export default function ChattingPage({ roomId = "room1" }) {
   const sendMessage = (e) => {
     e.preventDefault();
     if (message && currentRoom) {
-      socket.emit("sendMessage", message);
+      socket.emit("sendMessage", socket.id + " : " + message);
       setMessage("");
     }
   };
