@@ -14,10 +14,14 @@ export default function MakeRoomModal(props) {
     //video post => video id
     //room post => video id와 user id와 room 정보를 등록
     //해당 room page로 이동
-    console.log('방 만들기')
+    
+
+
     const response = await postRooms(roomInfo)
     if (response._id){
         navigate(`/room/${response._id}`)
+    } else {
+        alert('방 만들기에 실패했습니다... 나중에 다시 시도해주세요')
     }
     
   }
