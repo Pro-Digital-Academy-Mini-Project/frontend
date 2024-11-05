@@ -26,4 +26,4 @@ async function postRooms(room){
     }
 }
 
-export {getRooms, postRooms}
+export {getRooms, postRooms, getRoomById}
