@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import Card from 'react-bootstrap/Card';;
+import React, { useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
 import { getRooms } from '../../lib/api/room';
 import MakeRoomModal from './MakeRoomModal';
 import { useNavigate } from 'react-router-dom';
@@ -7,54 +7,106 @@ import { useNavigate } from 'react-router-dom';
 export default function MainPage() {
   const [roomArr, setRoomArr] = useState([]);
   const [show, setShow] = useState(false);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  useEffect(()=>{
-    const bringRooms = async() => {
-      const data = await getRooms();
-      setRoomArr(data)
-    }
-    bringRooms()
-  },[])
+  useEffect(() => {
+    searchRooms();
+  }, []);
 
-  const moveToRoom = (id) => { //room id 전달
-    navigate(`/room/${id}`)
-  }
+  useEffect(() => {
+    searchRooms();
+  }, [page]);
+
+  const moveToRoom = (id) => {
+    //room id 전달
+    navigate(`/room/${id}`);
+  };
+
+  const searchRooms = async () => {
+    const data = await getRooms(page, search);
+    setRoomArr(data);
+  };
   return (
     <>
       {/** Title & Search*/}
       <div>
         <h2>user_nickname의 함께 볼 때 더 즐거운 순간들</h2>
         <div>
-          <input type='text' placeholder='방 검색하기'/>
-          <button onClick={()=>{handleShow()}}>방 만들기</button>
+          <input
+            type="text"
+            placeholder="방 검색하기"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+              searchRooms();
+            }}
+          >
+            방 검색하기
+          </button>
+          <button
+            onClick={() => {
+              handleShow();
+            }}
+          >
+            방 만들기
+          </button>
         </div>
       </div>
 
       {/** Room List */}
       <div>
-        {roomArr.map((el, id)=>{
-          return(
-            <Card key={id} style={{ width: '18rem' }} onClick={()=>{moveToRoom(el._id)}}>
-              <Card.Img variant="top" src="" />
+        {roomArr.map((el, id) => {
+          return (
+            <Card
+              key={id}
+              style={{ width: '18rem' }}
+              onClick={() => {
+                moveToRoom(el._id);
+              }}
+            >
+              <Card.Img variant="top" src={`https://img.youtube.com/vi/${el.video_id.video_id}/0.jpg`} />
               <Card.Body>
                 <Card.Title>{el.room_name}</Card.Title>
-                <Card.Text>
-                  {el.video_id.title}
-                </Card.Text>
-                {el.is_private ? ('private') : ''} {/** private은 자물쇠 아이콘 가져오기 */}
+                <Card.Text>{/** user name 넣기 */}</Card.Text>
+                {el.is_private ? 'private' : ''} {/** private은 자물쇠 아이콘 가져오기 */}
               </Card.Body>
-            </Card> 
-          )
+            </Card>
+          );
         })}
       </div>
+      {page - 1 > 0 ? (
+        <button
+          onClick={() => {
+            if (page - 1 > 0) {
+              setPage(page - 1);
+            }
+          }}
+        >
+          previous
+        </button>
+      ) : (
+        ''
+      )}
+
+      <button
+        onClick={() => {
+          setPage(page + 1);
+        }}
+      >
+        next
+      </button>
 
       {/** Make Room Modal */}
       <div>
-        <MakeRoomModal show={show} handleClose={handleClose}/>
+        <MakeRoomModal show={show} handleClose={handleClose} />
       </div>
     </>
-  )
+  );
 }

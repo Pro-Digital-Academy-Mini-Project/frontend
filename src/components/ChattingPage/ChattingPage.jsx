@@ -1,46 +1,65 @@
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { useParams } from 'react-router-dom';
-import MessageInput from "./MessageInput";
-import TimelineChat from "./TimelineChat.jsx/TimelineChat";
+import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
+import { Nav } from 'react-bootstrap';
 
-// 소켓 연결은 컴포넌트 외부에서 한 번만 생성
-export const socket = io("http://localhost:3000", {
-  transports: ["websocket", "polling"],
+import './ChattingPage.css';
+import TimelineChat from './TimelineChat/TimelineChat';
+import TotalChat from './TotalChat/TotalChat';
+
+export const socket = io('http://localhost:3000', {
+  transports: ['websocket', 'polling'],
 });
 
-export default function ChattingPage() {
-  const params = useParams();
-  const roomId = params.roomId || "room1";
-  const [messages, setMessages] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState(null);
+const ChatMode = {
+  TIMELINE: 'timeline',
+  TOTAL: 'total',
+};
+
+export default function ChattingPage({ roomId }) {
+  const [roomUserCount, setRoomUserCount] = useState(0);
+  const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
 
   useEffect(() => {
-    // props로 전달받은 roomId 사용
-    socket.emit("joinRoom", roomId);
-    setCurrentRoom(roomId);
+    socket.emit('joinRoom', roomId);
 
-    // 메시지 수신 리스너
-    socket.on("receiveMessage", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
+    socket.on('roomUserCount', (msg) => {
+      setRoomUserCount(msg);
+      console.log('접속자수:', msg);
     });
 
-    // 컴포넌트 언마운트 시 정리
     return () => {
-      if (currentRoom) {
-        socket.emit("leaveRoom", currentRoom);
+      if (roomId) {
+        socket.emit('leaveRoom', roomId);
       }
-      socket.off("receiveMessage");
+      socket.off('receiveMessage');
     };
-  }, [roomId, currentRoom]); // roomId를 의존성 배열에 추가
+  }, [roomId]);
 
   return (
-    <div>
-      <h1>Chat Room: {currentRoom}</h1>
-      <h3>**websocket 서버를 켰는지 확인하세요</h3>
-      <hr/>
-        <TimelineChat messages={messages}/>
-        <MessageInput currentRoom={currentRoom}/>
+    <div className="chatting-container">
+      <div className="nav-container">
+        <span className="user-count">
+          <p>{roomId}</p>
+          <p>
+            <img src="../../../public/img/user-icon2.png" width="20" />
+            &nbsp;{roomUserCount}
+          </p>
+        </span>
+        <Nav className="nav-items" activeKey={chatMode} onSelect={(selectedKey) => setChatMode(selectedKey)}>
+          <Nav.Item>
+            <Nav.Link eventKey={ChatMode.TIMELINE} className={chatMode === ChatMode.TIMELINE ? 'active' : ''}>
+              타임라인
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey={ChatMode.TOTAL} className={chatMode === ChatMode.TOTAL ? 'active' : ''}>
+              전체
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </div>
+
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId="room1" />}
     </div>
   );
 }
