@@ -22,9 +22,6 @@ export default function ChattingPage({ roomId }) {
   useEffect(() => {
     socket.emit('joinRoom', roomId);
 
-    // socket.on('receiveMessage', (msg) => {
-    //   setMessages((prevMessages) => [...prevMessages, msg]);
-    // });
     socket.on('roomUserCount', (msg) => {
       setRoomUserCount(msg);
       console.log('접속자수:', msg);
