@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { Nav } from 'react-bootstrap';
-import './ChattingPage.css';
 
-import MessageInput from './MessageInput';
+import './ChattingPage.css';
 import TimelineChat from './TimelineChat/TimelineChat';
 import TotalChat from './TotalChat/TotalChat';
 
@@ -26,9 +25,9 @@ export default function ChattingPage({ roomId }) {
     socket.emit('joinRoom', roomId);
     setCurrentRoom(roomId);
 
-    socket.on('receiveMessage', (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-    });
+    // socket.on('receiveMessage', (msg) => {
+    //   setMessages((prevMessages) => [...prevMessages, msg]);
+    // });
     socket.on('roomUserCount', (msg) => {
       setRoomUserCount(msg);
       console.log('접속자수:', msg);
@@ -66,16 +65,7 @@ export default function ChattingPage({ roomId }) {
         </Nav>
       </div>
 
-      <div>
-        {chatMode === ChatMode.TIMELINE ? (
-          <TimelineChat roomId={roomId} />
-        ) : (
-          <div>
-            <TotalChat messages={messages} />
-            <MessageInput currentRoom={currentRoom} />
-          </div>
-        )}
-      </div>
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat messages={messages} />}
     </div>
   );
 }

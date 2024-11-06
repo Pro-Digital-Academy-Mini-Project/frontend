@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { socket } from './ChattingPage';
+import { socket } from '../ChattingPage';
 
 export default function MessageInput({ currentRoom }) {
   const [message, setMessage] = useState('');
