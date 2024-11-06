@@ -9,12 +9,14 @@ export default function MainPage() {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [username, setUserName] = useState('');
   const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
     searchRooms();
+    setUserName(localStorage.getItem('username'));
   }, []);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function MainPage() {
     <>
       {/** Title & Search*/}
       <div>
-        <h2>user_nickname의 함께 볼 때 더 즐거운 순간들</h2>
+        <h2>{username}의 함께 볼 때 더 즐거운 순간들</h2>
         <div>
           <input
             type="text"
