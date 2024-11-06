@@ -1,4 +1,5 @@
 import React from 'react';
+import './TotalChat.css';
 
 export default function TotalChat({ messages }) {
   return (
