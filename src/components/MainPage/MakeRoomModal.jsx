@@ -12,22 +12,14 @@ export default function MakeRoomModal(props) {
   const navigate = useNavigate();
 
   const makeRoom = async() => {
-    //video post => video id
-    //room post => video id와 user id와 room 정보를 등록
-    //해당 room page로 이동
-    console.log('방 만들기')
     const video_id = extractVideoId(videoUrl)
-    console.log('video_id', video_id)
-
     const video_response = await postVideo(video_id)
     if (video_response._id){
-        console.log('v_response', video_response)
         roomInfo.video_id = video_response._id
         setRoomInfo(roomInfo)
-
         const response = await postRooms(roomInfo)
         if (response._id){
-            console.log('r_response', response)
+            alert('성공적으로 방이 생성되었습니다!')
             navigate(`/room/${response._id}`)
         }
     }
