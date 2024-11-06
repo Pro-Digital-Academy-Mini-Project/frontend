@@ -22,9 +22,6 @@ export default function ChattingPage({ roomId }) {
   useEffect(() => {
     socket.emit('joinRoom', roomId);
 
-    // socket.on('receiveMessage', (msg) => {
-    //   setMessages((prevMessages) => [...prevMessages, msg]);
-    // });
     socket.on('roomUserCount', (msg) => {
       setRoomUserCount(msg);
       console.log('접속자수:', msg);
@@ -62,7 +59,7 @@ export default function ChattingPage({ roomId }) {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId={roomId} />}
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId="room1" />}
     </div>
   );
 }

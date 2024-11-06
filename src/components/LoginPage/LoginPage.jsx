@@ -15,7 +15,10 @@ export default function LoginPage() {
         setSuccess(''); // 이전 성공 메시지 초기화
 
         try {
-            const response = await axios.post('http://localhost:3000/users/login', { email, password });
+            const response = await axios.post('http://localhost:3000/users/login', { email, password },{
+                withCredentials:true,
+                
+            });
             alert('로그인 완료'); // 알림 추가
             setSuccess('로그인 성공!'); // 성공 메시지 설정
             console.log(response.data); // 로그인 후 필요한 데이터 처리
