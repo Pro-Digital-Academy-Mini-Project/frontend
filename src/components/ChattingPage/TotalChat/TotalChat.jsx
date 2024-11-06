@@ -1,6 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
+import MessageInput from './MessageInput';
 
-export default function TotalChat({ messages }) {
+export default function TotalChat({ currentRoom }) {
+  const [messages, setMessages] = useState([]);
   return (
     <div
       style={{
@@ -9,9 +12,8 @@ export default function TotalChat({ messages }) {
         overflowY: 'scroll',
       }}
     >
-      {messages.map((msg, index) => (
-        <div key={index}>{msg}</div>
-      ))}
+      {messages !== null ? messages.map((msg, index) => <div key={index}>{msg}</div>) : null}
+      <MessageInput currentRoom={currentRoom} />
     </div>
   );
 }
