@@ -7,6 +7,7 @@ import VideoPage from './VideoPage/VideoPage';
 import { getRoomById } from '../../lib/api/room';
 import PrivateModal from './PrivateModal';
 import axios from 'axios';
+import ChattingPage from '../ChattingPage/ChattingPage';
 
 export default function RoomPage() {
   const { roomId } = useParams();

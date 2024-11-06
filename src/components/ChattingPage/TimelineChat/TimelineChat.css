@@ -1,15 +1,21 @@
 /* 메인 컨테이너 */
 .timeline-container {
-  height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background-color: #1a1a1a;
   color: white;
 }
 
 /* 메시지 컨테이너 */
 .message-container {
-  height: calc(80vh - 150px);
+  height: 40vh;
   overflow-y: scroll;
-  padding: 10px 20px;
+}
+
+/* 하단 컨테이너 */
+.sub-container {
+  height: 100%;
 }
 
 /* 스크롤바 스타일 - Chrome, Safari, Edge */
@@ -144,4 +150,4 @@
 
 .send-button:hover {
   background-color: #0052cc;
-} 
+}
