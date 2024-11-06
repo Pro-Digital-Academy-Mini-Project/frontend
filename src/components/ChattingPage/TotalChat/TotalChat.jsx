@@ -1,6 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MessageInput from './MessageInput';
+import { socket } from '../ChattingPage';
 
 export default function TotalChat({ roomId }) {
   const [messages, setMessages] = useState([]);
