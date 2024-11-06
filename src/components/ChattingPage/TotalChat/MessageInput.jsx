@@ -1,18 +1,21 @@
 import React from 'react';
 import { useState } from 'react';
+import axios from 'axios';
+
 import { socket } from '../ChattingPage';
 
-export default function MessageInput({ currentRoom }) {
+export default function MessageInput({ roomId }) {
   const [message, setMessage] = useState('');
 
   //메시지 보내기
   const sendMessage = async (e) => {
     const currentDate = new Date();
+
     e.preventDefault();
-    if (message && currentRoom) {
+    if (message && roomId) {
       const newComment = {
-        username: username,
-        room_id: currentRoom,
+        username: 'user1',
+        room_id: roomId,
         content: message,
         created_at: currentDate,
       };
@@ -22,7 +25,7 @@ export default function MessageInput({ currentRoom }) {
         await axios.post('http://localhost:3000/Comment', newComment);
         // 소켓으로 전송
         socket.emit('sendTotalMessage', {
-          username: username,
+          username: 'user1',
           roomId: newComment.room_id,
           content: newComment.content,
           created_at: currentDate,

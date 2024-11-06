@@ -1,9 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import MessageInput from './MessageInput';
 import { socket } from '../ChattingPage';
 
 export default function TotalChat({ roomId }) {
+  console.log('지원', roomId);
   const [messages, setMessages] = useState([]);
 
   //초기 전체 댓글 로드
@@ -12,11 +15,9 @@ export default function TotalChat({ roomId }) {
       try {
         const response = await axios.get(`http://localhost:3000/Comment/${roomId}`);
         console.log(response.data);
-        // 시간 순으로 정렬
-        const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
-        setMessages(sortedComments);
+        setMessages(response.data);
       } catch (error) {
-        console.error('타임라인 댓글 로드 실패:', error);
+        console.error('전체 댓글 로드 실패:', error);
       }
     };
     fetchTotalComments();
@@ -48,7 +49,17 @@ export default function TotalChat({ roomId }) {
           overflowY: 'scroll',
         }}
       >
-        {messages !== null ? messages.map((msg, index) => <div key={index}>{msg}</div>) : null}
+        {messages !== null
+          ? messages.map((msg, index) => (
+              <div key={index}>
+                Username: {msg.username}
+                <br />
+                Content: {msg.content}
+                <br />
+                Created At: {msg.created_at}
+              </div>
+            ))
+          : null}
       </div>
       <MessageInput roomId={roomId} />
     </div>
