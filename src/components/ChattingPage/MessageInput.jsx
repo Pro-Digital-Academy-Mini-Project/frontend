@@ -1,21 +1,21 @@
-import React from 'react'
+import React from 'react';
 import { useState } from 'react';
 import { socket } from './ChattingPage';
 
-export default function MessageInput({currentRoom}) {
-    const [message, setMessage] = useState("");
+export default function MessageInput({ currentRoom }) {
+  const [message, setMessage] = useState('');
 
-    const sendMessage = (e) => {
-        e.preventDefault();
-        if (message && currentRoom) {
-          socket.emit("sendMessage", socket.id + " : " + message);
-          setMessage("");
-        }
-      };
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (message && currentRoom) {
+      socket.emit('sendMessage', socket.id + ' : ' + message);
+      setMessage('');
+    }
+  };
 
   return (
     <>
-    <form onSubmit={sendMessage}>
+      <form onSubmit={sendMessage}>
         <input
           type="text"
           value={message}
@@ -25,5 +25,5 @@ export default function MessageInput({currentRoom}) {
         <button type="submit">Send</button>
       </form>
     </>
-  )
+  );
 }

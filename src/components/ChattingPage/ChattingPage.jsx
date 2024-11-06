@@ -48,7 +48,13 @@ export default function ChattingPage() {
   return (
     <div className="chatting-container">
       <div className="nav-container">
-        <span className="user-count">{roomUserCount}</span>
+        <span className="user-count">
+          <p>{currentRoom}</p>
+          <p>
+            <img src="../../../public/img/user-icon2.png" width="20" />
+            &nbsp;{roomUserCount}
+          </p>
+        </span>
         <Nav className="nav-items" activeKey={chatMode} onSelect={(selectedKey) => setChatMode(selectedKey)}>
           <Nav.Item>
             <Nav.Link eventKey={ChatMode.TIMELINE} className={chatMode === ChatMode.TIMELINE ? 'active' : ''}>
@@ -67,7 +73,7 @@ export default function ChattingPage() {
         <TimelineChat messages={messages} />
       ) : (
         <div>
-          <TotalChat />
+          <TotalChat messages={messages}/>
           <MessageInput currentRoom={currentRoom} />
         </div>
       )}

@@ -4,10 +4,11 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { postRooms } from '../../lib/api/room';
 import { useNavigate } from 'react-router-dom';
+import { postVideo } from '../../lib/api/video';
 
 export default function MakeRoomModal(props) {
-  const [roomInfo, setRoomInfo] = useState({name:'', password:'', is_private:false});
-  const [video, setVideo] = useState({});
+  const [roomInfo, setRoomInfo] = useState({name:'', password:'', is_private:false, video_id:''});
+  const [videoUrl, setVideoUrl] = useState('');
   const navigate = useNavigate();
 
   const makeRoom = async() => {
@@ -15,12 +16,27 @@ export default function MakeRoomModal(props) {
     //room post => video id와 user id와 room 정보를 등록
     //해당 room page로 이동
     console.log('방 만들기')
-    const response = await postRooms(roomInfo)
-    if (response._id){
-        navigate(`/room/${response._id}`)
+    const video_id = extractVideoId(videoUrl)
+    console.log('video_id', video_id)
+
+    const video_response = await postVideo(video_id)
+    if (video_response._id){
+        console.log('v_response', video_response)
+        roomInfo.video_id = video_response._id
+        setRoomInfo(roomInfo)
+
+        const response = await postRooms(roomInfo)
+        if (response._id){
+            console.log('r_response', response)
+            navigate(`/room/${response._id}`)
+        }
     }
-    
   }
+  function extractVideoId(url) {
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)?|youtu\.be\/)([^&\n?#]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
 
   return (
       <Modal show={props.show} onHide={props.handleClose}>
@@ -38,6 +54,9 @@ export default function MakeRoomModal(props) {
                 type="text"
                 placeholder="youtube url을 입력해주세요"
                 autoFocus
+                onChange={(e)=>{
+                    setVideoUrl(()=>e.target.value)
+                }}
             />
             </Form.Group>
             <Form.Group className="mb-3" controlId="form.ControlTitle">
