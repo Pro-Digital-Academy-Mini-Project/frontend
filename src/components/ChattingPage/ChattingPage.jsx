@@ -27,9 +27,6 @@ export default function ChattingPage() {
     socket.emit('joinRoom', roomId);
     setCurrentRoom(roomId);
 
-    // socket.on('receiveMessage', (msg) => {
-    //   setMessages((prevMessages) => [...prevMessages, msg]);
-    // });
     socket.on('roomUserCount', (msg) => {
       setRoomUserCount(msg);
       console.log('접속자수:', msg);
