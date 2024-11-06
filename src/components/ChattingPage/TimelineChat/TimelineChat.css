@@ -1,0 +1,147 @@
+/* 메인 컨테이너 */
+.timeline-container {
+  height: 80vh;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+/* 메시지 컨테이너 */
+.message-container {
+  height: calc(80vh - 150px);
+  overflow-y: scroll;
+  padding: 10px 20px;
+}
+
+/* 스크롤바 스타일 - Chrome, Safari, Edge */
+.message-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.message-container::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.message-container::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.message-container::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* 스크롤바 스타일 - Firefox */
+.message-container {
+  scrollbar-width: thin;
+  scrollbar-color: #333 #1a1a1a;
+}
+
+/* 메시지 아이템 */
+.message-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+/* 사용자 아바타 */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 메시지 콘텐츠 */
+.message-content {
+  flex: 1;
+}
+
+.message-header {
+  margin-bottom: 5px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.timestamp {
+  color: #666;
+  margin-left: 10px;
+}
+
+/* 컨트롤 버튼 컨테이너 */
+.controls-container {
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  padding: 10px 20px;
+  background-color: #1a1a1a;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* 컨트롤 버튼 */
+.control-button {
+  padding: 5px 10px;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.control-button:hover {
+  background-color: #444;
+}
+
+/* 입력 폼 컨테이너 */
+.input-container {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+}
+
+/* 입력 폼 */
+.message-form {
+  display: flex;
+  gap: 10px;
+}
+
+/* 메시지 입력 필드 */
+.message-input {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: #333;
+  color: white;
+}
+
+/* 전송 버튼 */
+.send-button {
+  background-color: #0066ff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+}
+
+.send-button:hover {
+  background-color: #0052cc;
+} 
