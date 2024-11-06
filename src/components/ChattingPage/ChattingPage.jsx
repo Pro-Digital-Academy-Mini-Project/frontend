@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
-import './ChattingPage.css';
 
-import MessageInput from './MessageInput';
+import './ChattingPage.css';
 import TimelineChat from './TimelineChat/TimelineChat';
 import TotalChat from './TotalChat/TotalChat';
 
@@ -20,7 +19,6 @@ const ChatMode = {
 export default function ChattingPage() {
   const params = useParams();
   const roomId = params.roomId || 'room1';
-  const [messages, setMessages] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
@@ -29,9 +27,9 @@ export default function ChattingPage() {
     socket.emit('joinRoom', roomId);
     setCurrentRoom(roomId);
 
-    socket.on('receiveMessage', (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-    });
+    // socket.on('receiveMessage', (msg) => {
+    //   setMessages((prevMessages) => [...prevMessages, msg]);
+    // });
     socket.on('roomUserCount', (msg) => {
       setRoomUserCount(msg);
       console.log('접속자수:', msg);
@@ -69,14 +67,7 @@ export default function ChattingPage() {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? (
-        <TimelineChat messages={messages} />
-      ) : (
-        <div>
-          <TotalChat messages={messages}/>
-          <MessageInput currentRoom={currentRoom} />
-        </div>
-      )}
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat /> : <TotalChat currentRoom={currentRoom} />}
     </div>
   );
 }
