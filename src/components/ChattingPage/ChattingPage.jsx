@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import { useParams } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
 import './ChattingPage.css';
 
@@ -17,9 +16,7 @@ const ChatMode = {
   TOTAL: 'total',
 };
 
-export default function ChattingPage() {
-  const params = useParams();
-  const roomId = params.roomId || 'room1';
+export default function ChattingPage({ roomId }) {
   const [messages, setMessages] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [roomUserCount, setRoomUserCount] = useState(0);
@@ -69,14 +66,16 @@ export default function ChattingPage() {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? (
-        <TimelineChat messages={messages} />
-      ) : (
-        <div>
-          <TotalChat messages={messages}/>
-          <MessageInput currentRoom={currentRoom} />
-        </div>
-      )}
+      <div>
+        {chatMode === ChatMode.TIMELINE ? (
+          <TimelineChat roomId={roomId} />
+        ) : (
+          <div>
+            <TotalChat messages={messages} />
+            <MessageInput currentRoom={currentRoom} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

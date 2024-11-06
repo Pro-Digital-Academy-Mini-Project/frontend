@@ -8,8 +8,8 @@ const socket = io('http://localhost:3000', {
   transports: ['websocket', 'polling'],
 });
 
-export default function TimelineChat() {
-  const { roomId = '60d21b4667d0d8992e610c86' } = useParams();
+// export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime = 0 }) {
+export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
   const [message, setMessage] = useState('');
   const [timelineComments, setTimelineComments] = useState([]); // [{time: number, message: string, userId: string}]
   const [currentTime, setCurrentTime] = useState(0); // 비디오 현재 시간
@@ -199,32 +199,34 @@ export default function TimelineChat() {
         ))}
       </div>
 
-      <div className="controls-container">
-        <button className="control-button" onClick={skipBackward}>
-          -2초
-        </button>
-        <button className="control-button" onClick={togglePlay}>
-          {isPlaying ? '일시정지' : '재생'}
-        </button>
-        <button className="control-button" onClick={resetTimer}>
-          초기화
-        </button>
-        <span style={{ color: '#666' }}>현재 시간: {currentTime}초</span>
-      </div>
-
-      <div className="input-container">
-        <form onSubmit={sendMessage} className="message-form">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="메시지 보내기"
-            className="message-input"
-          />
-          <button type="submit" className="send-button">
-            ↑
+      <div className="sub-container">
+        <div className="controls-container">
+          <button className="control-button" onClick={skipBackward}>
+            -2초
           </button>
-        </form>
+          <button className="control-button" onClick={togglePlay}>
+            {isPlaying ? '일시정지' : '재생'}
+          </button>
+          <button className="control-button" onClick={resetTimer}>
+            초기화
+          </button>
+          <span style={{ color: '#666' }}>현재 시간: {currentTime}초</span>
+        </div>
+
+        <div className="input-container">
+          <form onSubmit={sendMessage} className="message-form">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="메시지 보내기"
+              className="message-input"
+            />
+            <button type="submit" className="send-button">
+              ↑
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
