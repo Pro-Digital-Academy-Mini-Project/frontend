@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import { useParams } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
 
 import './ChattingPage.css';
@@ -16,16 +15,12 @@ const ChatMode = {
   TOTAL: 'total',
 };
 
-export default function ChattingPage() {
-  const params = useParams();
-  const roomId = params.roomId || 'room1';
-  const [currentRoom, setCurrentRoom] = useState(null);
+export default function ChattingPage({ roomId }) {
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
 
   useEffect(() => {
     socket.emit('joinRoom', roomId);
-    setCurrentRoom(roomId);
 
     // socket.on('receiveMessage', (msg) => {
     //   setMessages((prevMessages) => [...prevMessages, msg]);
@@ -36,18 +31,18 @@ export default function ChattingPage() {
     });
 
     return () => {
-      if (currentRoom) {
-        socket.emit('leaveRoom', currentRoom);
+      if (roomId) {
+        socket.emit('leaveRoom', roomId);
       }
       socket.off('receiveMessage');
     };
-  }, [roomId, currentRoom]);
+  }, [roomId]);
 
   return (
     <div className="chatting-container">
       <div className="nav-container">
         <span className="user-count">
-          <p>{currentRoom}</p>
+          <p>{roomId}</p>
           <p>
             <img src="../../../public/img/user-icon2.png" width="20" />
             &nbsp;{roomUserCount}
@@ -67,7 +62,7 @@ export default function ChattingPage() {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? <TimelineChat /> : <TotalChat currentRoom={currentRoom} />}
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId={roomId} />}
     </div>
   );
 }
