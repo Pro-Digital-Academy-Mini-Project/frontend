@@ -19,3 +19,5 @@ const postVideo = async (url) => {
     return {};
   }
 };
+
+export { getVideoById, getVideos, postVideo };

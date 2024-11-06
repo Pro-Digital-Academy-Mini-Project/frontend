@@ -69,8 +69,9 @@ export default function RoomPage() {
       ) : (
         <div>
           {/** public or 비밀번호 확인 후 기존 페이지**/}
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
             <VideoPage video_id={videoId} />
+            <ChattingPage roomId={roomId} />
           </div>
         </div>
       )}
