@@ -2,7 +2,9 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:3000'
 
 async function getRooms(){
-    const response = await axios.get(`${BASE_URL}/rooms`)
+    const response = await axios.get(`${BASE_URL}/rooms`, {
+        withCredentials:true
+    })
     return response.data;
 }
 
@@ -10,6 +12,7 @@ async function getRoomById(id){
     const response = await axios.get(`${BASE_URL}/rooms/${id}`)
     return response.data;
 }
+
 
 async function postRooms(room){
     try {
