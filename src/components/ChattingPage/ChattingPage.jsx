@@ -16,14 +16,11 @@ const ChatMode = {
 };
 
 export default function ChattingPage({ roomId }) {
-  const [messages, setMessages] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState(null);
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
 
   useEffect(() => {
     socket.emit('joinRoom', roomId);
-    setCurrentRoom(roomId);
 
     // socket.on('receiveMessage', (msg) => {
     //   setMessages((prevMessages) => [...prevMessages, msg]);
@@ -34,18 +31,18 @@ export default function ChattingPage({ roomId }) {
     });
 
     return () => {
-      if (currentRoom) {
-        socket.emit('leaveRoom', currentRoom);
+      if (roomId) {
+        socket.emit('leaveRoom', roomId);
       }
       socket.off('receiveMessage');
     };
-  }, [roomId, currentRoom]);
+  }, [roomId]);
 
   return (
     <div className="chatting-container">
       <div className="nav-container">
         <span className="user-count">
-          <p>{currentRoom}</p>
+          <p>{roomId}</p>
           <p>
             <img src="../../../public/img/user-icon2.png" width="20" />
             &nbsp;{roomUserCount}
@@ -65,7 +62,7 @@ export default function ChattingPage({ roomId }) {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat messages={messages} />}
+      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId={roomId} />}
     </div>
   );
 }
