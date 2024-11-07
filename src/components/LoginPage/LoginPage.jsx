@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 기본 폼 제출 방지
@@ -22,11 +24,9 @@ export default function LoginPage() {
           withCredentials: true,
         },
       );
-      alert('로그인 완료'); // 알림 추가
-      setSuccess('로그인 성공!'); // 성공 메시지 설정
-      // console.log(response.data); // 로그인 후 필요한 데이터 처리
-      localStorage.setItem('username', response.data.username);
-      navigate('/'); // 홈 페이지로 리다이렉트
+      alert('로그인 완료');
+      login(response.data.username);
+      navigate('/');
     } catch (err) {
       const errorMessage = err.response?.data?.message || '로그인 실패';
       setError(errorMessage); // 에러 메시지 설정
