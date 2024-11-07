@@ -3,10 +3,11 @@ import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './TimelineChat.css';
+import { socket } from '../ChattingPage';
 
-const socket = io('http://localhost:3000', {
-  transports: ['websocket', 'polling'],
-});
+// const socket = io('http://localhost:3000', {
+//   transports: ['websocket', 'polling'],
+// });
 
 // export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime = 0 }) {
 export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
@@ -66,9 +67,8 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
   }, [roomId]);
 
   useEffect(() => {
-    socket.off('receiveTimeLineMessage');
+    // socket.off('receiveTimeLineMessage');
 
-    socket.emit('joinTimeLineRoom', roomId);
     setCurrentRoomId(roomId);
 
     // 새로운 타임라인 댓글 수신
@@ -88,9 +88,9 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     });
 
     return () => {
-      if (currentRoomId) {
-        socket.emit('leaveTimeLineRoom', currentRoomId);
-      }
+      // if (currentRoomId) {
+      //   socket.emit('leaveTimeLineRoom', currentRoomId);
+      // }
       socket.off('receiveTimeLineMessage');
     };
   }, [roomId, currentRoomId]);
