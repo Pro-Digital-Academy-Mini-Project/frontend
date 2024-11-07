@@ -14,6 +14,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
   const [visibleComments, setVisibleComments] = useState([]);
   const [username] = useState(localStorage.getItem('username'));
   const messageContainerRef = useRef(null);
+  const [newCommentAdded, setNewCommentAdded] = useState(false); // 새로운 댓글 추가 여부
 
   // 초기 타임라인 댓글 로드
   useEffect(() => {
@@ -47,17 +48,15 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
             content: data.message,
           },
         ];
+        // 정렬된 댓글 목록 반환
         return newComments.sort((a, b) => a.timestamp - b.timestamp);
       });
     });
 
     return () => {
-      // if (currentRoomId) {
-      //   socket.emit('leaveTimeLineRoom', currentRoomId);
-      // }
       socket.off('receiveTimeLineMessage');
     };
-  }, [roomId, currentRoomId]);
+  }, [roomId]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -98,10 +97,13 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
     }
   };
 
-  // visibleComments가 변경될 때마다 스크롤
+  // visibleComments가 변경될 때 스크롤 이동
   useEffect(() => {
-    scrollToBottom();
-  }, [visibleComments]);
+    if (newCommentAdded) {
+      scrollToBottom();
+      setNewCommentAdded(false); // 플래그 초기화
+    }
+  }, [visibleComments, newCommentAdded]); // visibleComments와 newCommentAdded가 변경될 때 호출
 
   // 상단에 함수 추가
   const generateColor = (username) => {
@@ -144,7 +146,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
     <div className="timeline-container">
       <div ref={messageContainerRef} className="message-container">
         {visibleComments.map((comment, index) => (
-          <div key={index} className="message-item">
+          <div key={index} className={`message-item ${comment.username === username ? 'right' : ''}`}>
             <div className="user-avatar" style={{ backgroundColor: generateColor(comment.username) }}>
               {getInitials(comment.username)}
             </div>
