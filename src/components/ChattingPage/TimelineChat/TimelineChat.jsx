@@ -7,7 +7,7 @@ import { socket } from '../ChattingPage';
 //   transports: ['websocket', 'polling'],
 // });
 
-export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime = 0 }) {
+export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime }) {
   const [message, setMessage] = useState('');
   const [timelineComments, setTimelineComments] = useState([]); // [{time: number, message: string, userId: string}]
   const [currentRoomId, setCurrentRoomId] = useState(null);
@@ -20,8 +20,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
     const fetchTimelineComments = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/api/timelinecomment/${roomId}`);
-        console.log(response.data);
-        // 시간 순으로 정렬
         const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
         setTimelineComments(sortedComments);
       } catch (error) {
@@ -33,7 +31,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
   }, [roomId]);
 
   useEffect(() => {
-    // socket.off('receiveTimeLineMessage');
+    socket.off('receiveTimeLineMessage');
 
     setCurrentRoomId(roomId);
 
@@ -74,7 +72,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
       try {
         // DB에 저장
         await axios.post('http://localhost:3000/api/timelinecomment', newTimelineComment);
-
         // 소켓으로 전송
         socket.emit('sendTimeLineMessage', {
           username: username,
@@ -125,6 +122,24 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
     return username.slice(0, 2).toUpperCase();
   };
 
+  const formatTimestamp = (timestamp) => {
+    const totalSeconds = Math.floor(timestamp);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+      return `${hours}시간 ${minutes}분 ${seconds}초`;
+    } else if (minutes > 0) {
+      return `${minutes}분 ${seconds}초`;
+    }
+    return `${seconds}초`;
+  };
+
+  const handleTimestampClick = (timestamp) => {
+    // seekToTime(timestamp);
+  };
+
   return (
     <div className="timeline-container">
       <div ref={messageContainerRef} className="message-container">
@@ -136,7 +151,9 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
             <div className="message-content">
               <div className="message-header">
                 <span className="username">{comment.username}</span>
-                <span className="timestamp">{comment.timestamp}초전</span>
+                <span className="timestamp" onClick={() => handleTimestampClick(comment.timestamp)}>
+                  {formatTimestamp(comment.timestamp)}
+                </span>
               </div>
               <div>{comment.content}</div>
             </div>

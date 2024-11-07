@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // 로그아웃 API 호출
-      const response = await fetch('http://localhost:3000/users/logout', {
+      const response = await fetch('http://localhost:3000/api/users/logout', {
         method: 'POST',
         credentials: 'include', // 쿠키를 함께 보내기 위해 사용
       });

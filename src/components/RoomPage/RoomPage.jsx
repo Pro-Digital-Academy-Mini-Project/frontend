@@ -60,7 +60,6 @@ export default function RoomPage() {
     }
   };
 
-  // currentTime을 업데이트하는 함수
   const updateCurrentTime = (time) => {
     setCurrentTime(time);
   };
@@ -78,7 +77,7 @@ export default function RoomPage() {
           {/** public or 비밀번호 확인 후 기존 페이지 **/}
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <VideoPage video_id={videoId} updateCurrentTime={updateCurrentTime} />
-            <ChattingPage roomId={roomId} currentTime={currentTime} />
+            <ChattingPage roomId={roomId} currentTime={currentTime} setCurrentTime={setCurrentTime} />
           </div>
         </div>
       )}

@@ -19,7 +19,7 @@ const ChatMode = {
   TOTAL: 'total',
 };
 
-export default function ChattingPage({ roomId, currentTime }) {
+export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
 
@@ -64,7 +64,7 @@ export default function ChattingPage({ roomId, currentTime }) {
       </div>
 
       {chatMode === ChatMode.TIMELINE ? (
-        <TimelineChat roomId={roomId} currentTime={currentTime} />
+        <TimelineChat roomId={roomId} currentTime={currentTime} setCurrentTime={setCurrentTime} />
       ) : (
         <TotalChat roomId={roomId} />
       )}
