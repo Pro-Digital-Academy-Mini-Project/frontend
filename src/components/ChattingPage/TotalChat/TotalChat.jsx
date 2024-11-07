@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import MessageInput from './MessageInput';
 import { socket } from '../ChattingPage';
+import { BASE_URL } from '../../../lib/api/api';
 
 export default function TotalChat({ roomId }) {
   const [messages, setMessages] = useState([]);
@@ -12,7 +13,7 @@ export default function TotalChat({ roomId }) {
   useEffect(() => {
     const fetchTotalComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/Comment/${roomId}`);
+        const response = await axios.get(`${BASE_URL}/Comment/${roomId}`);
         console.log(response.data);
         setMessages(response.data);
       } catch (error) {

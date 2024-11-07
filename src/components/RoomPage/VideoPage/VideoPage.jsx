@@ -1,21 +1,36 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import YouTube from 'react-youtube';
 
-export default function VideoPage(video_id) {
+export default function VideoPage({ video_id, updateCurrentTime }) {
   const playerRef = useRef(null);
 
   const onReady = (event) => {
-    playerRef.current = event.target; // YouTube 플레이어 인스턴스를 저장
+    playerRef.current = event.target;
   };
 
   const getCurrentTime = () => {
     if (playerRef.current) {
       const currentTime = playerRef.current.getCurrentTime();
-      console.log('Current Time:', currentTime);
+      updateCurrentTime(currentTime);
       return currentTime;
     }
     return null;
   };
+
+  const seekToTime = (time) => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(time, true);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getCurrentTime();
+    }, 100);
+    console.log('video_id ', video_id);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-full h-full flex items-center justify-center bg-black">
       <div className="w-full h-0 pb-[56.25%] relative">
