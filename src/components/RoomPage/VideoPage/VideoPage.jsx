@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import YouTube from 'react-youtube';
 
-export default function VideoPage(video_id) {
+export default function VideoPage({ video_id, updateCurrentTime }) {
   const playerRef = useRef(null);
 
   const onReady = (event) => {
@@ -12,12 +12,23 @@ export default function VideoPage(video_id) {
     if (playerRef.current) {
       const currentTime = playerRef.current.getCurrentTime();
       console.log('Current Time:', currentTime);
+      updateCurrentTime(currentTime); // RoomPage의 currentTime 업데이트 함수 호출
       return currentTime;
     }
     return null;
   };
+
+  // 예를 들어, 1초마다 현재 시간을 업데이트
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getCurrentTime();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div>
+    <div ref={playerRef}>
       <YouTube
         videoId={video_id.video_id}
         onReady={onReady} // 플레이어가 준비되면 호출

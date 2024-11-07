@@ -7,7 +7,7 @@ import TimelineChat from './TimelineChat/TimelineChat';
 import TotalChat from './TotalChat/TotalChat';
 
 export const socket = io('http://localhost:3000', {
-  transports: ['websocket', 'polling'],
+  transports: ['websocket'],
 });
 
 // export const socket = io('http://43.203.186.58:3000', {
@@ -19,7 +19,7 @@ const ChatMode = {
   TOTAL: 'total',
 };
 
-export default function ChattingPage({ roomId }) {
+export default function ChattingPage({ roomId, currentTime }) {
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
 
@@ -63,7 +63,11 @@ export default function ChattingPage({ roomId }) {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId={roomId} />}
+      {chatMode === ChatMode.TIMELINE ? (
+        <TimelineChat roomId={roomId} currentTime={currentTime} />
+      ) : (
+        <TotalChat roomId={roomId} />
+      )}
     </div>
   );
 }

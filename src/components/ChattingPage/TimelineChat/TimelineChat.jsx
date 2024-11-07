@@ -7,45 +7,13 @@ import { socket } from '../ChattingPage';
 //   transports: ['websocket', 'polling'],
 // });
 
-// export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime = 0 }) {
-export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
+export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime = 0 }) {
   const [message, setMessage] = useState('');
   const [timelineComments, setTimelineComments] = useState([]); // [{time: number, message: string, userId: string}]
-  const [currentTime, setCurrentTime] = useState(0); // 비디오 현재 시간
   const [currentRoomId, setCurrentRoomId] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false); // 재생 상태를 관리하는 state 추가
   const [visibleComments, setVisibleComments] = useState([]);
-  const [username, setUsername] = useState('testuser');
+  const [username] = useState(localStorage.getItem('username'));
   const messageContainerRef = useRef(null);
-
-  // 타이머 함수 추가
-  useEffect(() => {
-    let timer;
-
-    if (isPlaying) {
-      timer = setInterval(() => {
-        setCurrentTime((prevTime) => prevTime + 1);
-      }, 1000);
-    }
-
-    // 컴포넌트 언마운트 또는 isPlaying이 false가 될 때 타이머 정리
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, [isPlaying]);
-
-  // 재생/일시정지 토글 함수
-  const togglePlay = () => {
-    setIsPlaying((prev) => !prev);
-  };
-
-  // 시간 초기화 함수
-  const resetTimer = () => {
-    setCurrentTime(0);
-    setIsPlaying(false);
-  };
 
   // 초기 타임라인 댓글 로드
   useEffect(() => {
@@ -93,22 +61,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     };
   }, [roomId, currentRoomId]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('auth-token');
-    if (token) {
-      // 사용자 정보를 가져오는 API 호출
-      axios
-        .get('http://localhost:3000/api/user/me', {
-          headers: { Authorization: token },
-        })
-        .then((response) => setUsername(response.data.username))
-        .catch((error) => {
-          console.error('사용자 정보 로드 실패:', error);
-          console.log(username);
-        });
-    }
-  }, []);
-
   const sendMessage = async (e) => {
     e.preventDefault();
     if (message && currentRoomId) {
@@ -141,11 +93,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     // 비디오 시간에 따른 댓글 필터링
     setVisibleComments(timelineComments.filter((comment) => comment.timestamp <= currentTime));
   }, [currentTime, timelineComments]);
-
-  // 2초 앞으로 이동하는 함수 추가
-  const skipBackward = () => {
-    setCurrentTime((prevTime) => prevTime - 2);
-  };
 
   // 스크롤 자동 이동 함수
   const scrollToBottom = () => {
@@ -198,19 +145,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
       </div>
 
       <div className="sub-container">
-        <div className="controls-container">
-          <button className="control-button" onClick={skipBackward}>
-            -2초
-          </button>
-          <button className="control-button" onClick={togglePlay}>
-            {isPlaying ? '일시정지' : '재생'}
-          </button>
-          <button className="control-button" onClick={resetTimer}>
-            초기화
-          </button>
-          <span style={{ color: '#666' }}>현재 시간: {currentTime}초</span>
-        </div>
-
         <div className="input-container">
           <form onSubmit={sendMessage} className="message-form">
             <input
