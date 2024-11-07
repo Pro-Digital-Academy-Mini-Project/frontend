@@ -23,7 +23,7 @@ export default function MessageInput({ roomId }) {
 
       try {
         // DB에 저장
-        await axios.post('http://localhost:3000/Comment', newComment);
+        await axios.post('http://localhost:3000/api/Comment', newComment);
         // 소켓으로 전송
         socket.emit('sendTotalMessage', {
           username: 'user1',

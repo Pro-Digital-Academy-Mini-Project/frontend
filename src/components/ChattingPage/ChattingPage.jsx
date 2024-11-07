@@ -10,12 +10,16 @@ export const socket = io('http://localhost:3000', {
   transports: ['websocket'],
 });
 
+// export const socket = io('http://43.203.186.58:3000', {
+//   transports: ['websocket', 'polling'],
+// });
+
 const ChatMode = {
   TIMELINE: 'timeline',
   TOTAL: 'total',
 };
 
-export default function ChattingPage({ roomId }) {
+export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
 
@@ -59,7 +63,11 @@ export default function ChattingPage({ roomId }) {
         </Nav>
       </div>
 
-      {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId={roomId} />}
+      {chatMode === ChatMode.TIMELINE ? (
+        <TimelineChat roomId={roomId} currentTime={currentTime} setCurrentTime={setCurrentTime} />
+      ) : (
+        <TotalChat roomId={roomId} />
+      )}
     </div>
   );
 }

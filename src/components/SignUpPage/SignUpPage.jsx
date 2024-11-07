@@ -17,7 +17,7 @@ export default function SignUpPage() {
 
     try {
       // 서버에 회원가입 요청
-      const response = await axios.post('http://localhost:3000/users/signup', { username, email, password });
+      const response = await axios.post('http://localhost:3000/api/users/signup', { username, email, password });
 
       // 회원가입 성공 시
       setSuccess('회원가입 성공!'); // 성공 메시지 설정
