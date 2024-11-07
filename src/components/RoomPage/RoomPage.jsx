@@ -62,17 +62,21 @@ export default function RoomPage() {
 
   return (
     <div>
-      <h1>{roomInfo.room_name}</h1>
       {roomInfo.is_private && !isAuthenticated ? (
         <div>
           {/**private인 경우 비밀번호 확인**/}
           <PrivateModal show={show} handleAuth={handleAuth} handlePasswordSubmit={handlePasswordSubmit} />
         </div>
       ) : (
-        <div>
-          {/** public or 비밀번호 확인 후 기존 페이지**/}
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
+        // public or 비밀번호 확인 후 기존 페이지
+        <div className="flex h-screen bg-black">
+          {/* Video section - takes up 70% of the width */}
+          <div className="w-[75%] h-full">
             <VideoPage video_id={videoId} />
+          </div>
+
+          {/* Chat section - takes up 30% of the width */}
+          <div className="w-[25%] h-full border-l border-gray-800">
             <ChattingPage roomId={roomId} />
           </div>
         </div>
