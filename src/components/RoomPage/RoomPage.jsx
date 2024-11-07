@@ -23,26 +23,28 @@ export default function RoomPage() {
   useEffect(() => {
     const bringRoom = async () => {
       const data = await getRoomById(roomId);
-      if (data._id) {
+      if (data.room_name) {
         setRoomInfo(data);
       } else {
-        alert('Failed to load room information...');
+        alert('방 정보를 불러오는데 실패했습니다');
         navigate('/');
       }
     };
     bringRoom();
   }, []);
 
+  //
   useEffect(() => {
-    if (roomInfo.video_id) {
-      setVideoId(String(roomInfo.video_id.video_id || ''));
+    if (roomInfo.room_video_id) {
+      setVideoId(String(roomInfo.room_video_id || ''));
     }
   }, [roomInfo]);
 
+  //비밀번호 확인
   const handlePasswordSubmit = async (password) => {
     try {
       const response = await axios.post(`http://localhost:3000/rooms/verify-password`, {
-        roomId: roomInfo._id,
+        roomId: roomId,
         password,
       });
       if (response.data.isValid) {

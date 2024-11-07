@@ -9,12 +9,14 @@ export default function MainPage() {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [username, setUserName] = useState('');
   const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
     searchRooms();
+    setUserName(localStorage.getItem('username'));
   }, [page]);
 
   const moveToRoom = (id) => {
@@ -30,7 +32,7 @@ export default function MainPage() {
     <>
       {/** Title & Search*/}
       <div>
-        <h2>user_nickname의 함께 볼 때 더 즐거운 순간들</h2>
+        <h2>{username}의 함께 볼 때 더 즐거운 순간들</h2>
         <div>
           <input
             type="text"
@@ -67,7 +69,7 @@ export default function MainPage() {
                 moveToRoom(el._id);
               }}
             >
-              <Card.Img variant="top" src={`https://img.youtube.com/vi/${el.video_id.video_id}/0.jpg`} />
+              <Card.Img variant="top" src={`https://img.youtube.com/vi/${el.video_id.video_url_id}/0.jpg`} />
               <Card.Body>
                 <Card.Title>{el.room_name}</Card.Title>
                 <Card.Text>{/** user name 넣기 */}</Card.Text>
@@ -101,7 +103,7 @@ export default function MainPage() {
 
       {/** Make Room Modal */}
       <div>
-        <MakeRoomModal show={show} handleClose={handleClose} />
+        <MakeRoomModal show={show} handleClose={handleClose} username={username} />
       </div>
     </>
   );
