@@ -67,7 +67,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
   }, [roomId]);
 
   useEffect(() => {
-    // socket.off('receiveTimeLineMessage');
+    socket.off('receiveTimeLineMessage');
 
     setCurrentRoomId(roomId);
 
@@ -87,12 +87,12 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
       });
     });
 
-    // return () => {
-    //   if (currentRoomId) {
-    //     socket.emit('leaveTimeLineRoom', currentRoomId);
-    //   }
-    //   socket.off('receiveTimeLineMessage');
-    // };
+    return () => {
+      if (currentRoomId) {
+        socket.emit('leaveTimeLineRoom', currentRoomId);
+      }
+      socket.off('receiveTimeLineMessage');
+    };
   }, [roomId, currentRoomId]);
 
   useEffect(() => {
