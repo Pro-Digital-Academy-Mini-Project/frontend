@@ -32,7 +32,7 @@ export default function RoomPage() {
       }
     };
     bringRoom();
-  }, [roomId, navigate]);
+  }, []);
 
   useEffect(() => {
     if (roomInfo.room_video_id) {
@@ -44,7 +44,7 @@ export default function RoomPage() {
   const handlePasswordSubmit = async (password) => {
     try {
       const response = await axios.post(`http://localhost:3000/api/rooms/verify-password`, {
-        roomId: roomInfo._id,
+        roomId: roomInfo.roomId,
         password: password,
       });
       if (response.data.isValid) {
