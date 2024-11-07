@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
+import { BASE_URL } from '../../lib/api/api';
 
 // Context 생성
 const AuthContext = createContext();
@@ -33,7 +34,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // 로그아웃 API 호출
-      const response = await fetch('http://localhost:3000/api/users/logout', {
+      const response = await fetch(`${BASE_URL}/users/logout`, {
         method: 'POST',
         credentials: 'include', // 쿠키를 함께 보내기 위해 사용
       });

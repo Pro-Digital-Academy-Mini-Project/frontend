@@ -26,8 +26,8 @@ export default function VideoPage({ video_id, updateCurrentTime }) {
   useEffect(() => {
     const interval = setInterval(() => {
       getCurrentTime();
-    }, 10);
-
+    }, 100);
+    console.log('video_id ', video_id);
     return () => clearInterval(interval);
   }, []);
 
