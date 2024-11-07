@@ -15,10 +15,6 @@ export default function MainPage() {
 
   useEffect(() => {
     searchRooms();
-  }, []);
-
-  useEffect(() => {
-    searchRooms();
   }, [page]);
 
   const moveToRoom = (id) => {

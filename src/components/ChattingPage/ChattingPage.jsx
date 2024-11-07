@@ -7,7 +7,7 @@ import TimelineChat from './TimelineChat/TimelineChat';
 import TotalChat from './TotalChat/TotalChat';
 
 export const socket = io('http://localhost:3000', {
-  transports: ['websocket', 'polling'],
+  transports: ['websocket'],
 });
 
 const ChatMode = {
