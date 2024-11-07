@@ -5,6 +5,7 @@ import axios from 'axios';
 import { socket } from '../ChattingPage';
 
 export default function MessageInput({ roomId }) {
+  console.log('roomId:', roomId);
   const [message, setMessage] = useState('');
 
   //메시지 보내기
