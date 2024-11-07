@@ -3,20 +3,28 @@ import Card from 'react-bootstrap/Card';
 import { getRooms } from '../../lib/api/room';
 import MakeRoomModal from './MakeRoomModal';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function MainPage() {
   const [roomArr, setRoomArr] = useState([]);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [username, setUserName] = useState('');
+  // const [username, setUserName] = useState('');
+
   const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { username} = useAuth();
+
   useEffect(() => {
     searchRooms();
-    setUserName(localStorage.getItem('username'));
+    // setUserName(localStorage.getItem('username'));
+  }, []);
+
+  useEffect(() => {
+    searchRooms();
   }, [page]);
 
   const moveToRoom = (id) => {
