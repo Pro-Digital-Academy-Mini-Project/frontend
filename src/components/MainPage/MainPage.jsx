@@ -17,10 +17,6 @@ export default function MainPage() {
   useEffect(() => {
     searchRooms();
     setUserName(localStorage.getItem('username'));
-  }, []);
-
-  useEffect(() => {
-    searchRooms();
   }, [page]);
 
   const moveToRoom = (id) => {
@@ -73,7 +69,7 @@ export default function MainPage() {
                 moveToRoom(el._id);
               }}
             >
-              <Card.Img variant="top" src={`https://img.youtube.com/vi/${el.video_id.video_id}/0.jpg`} />
+              <Card.Img variant="top" src={`https://img.youtube.com/vi/${el.video_id.video_url_id}/0.jpg`} />
               <Card.Body>
                 <Card.Title>{el.room_name}</Card.Title>
                 <Card.Text>{/** user name 넣기 */}</Card.Text>
@@ -107,7 +103,7 @@ export default function MainPage() {
 
       {/** Make Room Modal */}
       <div>
-        <MakeRoomModal show={show} handleClose={handleClose} />
+        <MakeRoomModal show={show} handleClose={handleClose} username={username} />
       </div>
     </>
   );
