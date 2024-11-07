@@ -8,6 +8,7 @@ import { getRoomById } from '../../lib/api/room';
 import PrivateModal from './PrivateModal';
 import axios from 'axios';
 import ChattingPage from '../ChattingPage/ChattingPage';
+import { BASE_URL } from '../../lib/api/api';
 
 export default function RoomPage() {
   const { roomId } = useParams();
@@ -43,7 +44,7 @@ export default function RoomPage() {
   // 비밀번호 확인
   const handlePasswordSubmit = async (password) => {
     try {
-      const response = await axios.post(`http://localhost:3000/api/rooms/verify-password`, {
+      const response = await axios.post(`${BASE_URL}/rooms/verify-password`, {
         roomId: roomInfo.roomId,
         password: password,
       });

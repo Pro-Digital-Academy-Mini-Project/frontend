@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './TimelineChat.css';
 import { socket } from '../ChattingPage';
+import { BASE_URL } from '../../../lib/api/api';
 
 export default function TimelineChat({ roomId, currentTime }) {
   const [message, setMessage] = useState('');
@@ -15,7 +16,7 @@ export default function TimelineChat({ roomId, currentTime }) {
   useEffect(() => {
     const fetchTimelineComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/timelinecomment/${roomId}`);
+        const response = await axios.get(`${BASE_URL}/timelinecomment/${roomId}`);
         const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
         setTimelineComments(sortedComments);
       } catch (error) {
@@ -65,7 +66,7 @@ export default function TimelineChat({ roomId, currentTime }) {
 
       try {
         // DB에 저장
-        await axios.post('http://localhost:3000/api/timelinecomment', newTimelineComment);
+        await axios.post(`${BASE_URL}/timelinecomment`, newTimelineComment);
         // 소켓으로 전송
         socket.emit('sendTimeLineMessage', {
           username: username,

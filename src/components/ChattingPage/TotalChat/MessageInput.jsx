@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../../../lib/api/api';
 
 import { socket } from '../ChattingPage';
 
@@ -23,7 +24,7 @@ export default function MessageInput({ roomId }) {
 
       try {
         // DB에 저장
-        await axios.post('http://localhost:3000/api/Comment', newComment);
+        await axios.post(`${BASE_URL}/Comment`, newComment);
         // 소켓으로 전송
         socket.emit('sendTotalMessage', {
           username: 'user1',

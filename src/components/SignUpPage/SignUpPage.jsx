@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../lib/api/api';
 
 export default function SignUpPage() {
   const [username, setUsername] = useState('');
@@ -17,7 +18,7 @@ export default function SignUpPage() {
 
     try {
       // 서버에 회원가입 요청
-      const response = await axios.post('http://localhost:3000/api/users/signup', { username, email, password });
+      const response = await axios.post(`${BASE_URL}/users/signup`, { username, email, password });
 
       // 회원가입 성공 시
       setSuccess('회원가입 성공!'); // 성공 메시지 설정

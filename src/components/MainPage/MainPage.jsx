@@ -16,7 +16,7 @@ export default function MainPage() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { username} = useAuth();
+  const { username } = useAuth();
 
   useEffect(() => {
     searchRooms();
@@ -40,7 +40,9 @@ export default function MainPage() {
     <>
       {/** Title & Search*/}
       <div>
-      <h2 className="text-3xl font-bold text-blue-600">{username ? username : '익명'}의 함께 볼 때 더 즐거운 순간들</h2>
+        <h2 className="text-3xl font-bold text-blue-600">
+          {username ? username : '익명'}의 함께 볼 때 더 즐거운 순간들
+        </h2>
         <div>
           <input
             type="text"

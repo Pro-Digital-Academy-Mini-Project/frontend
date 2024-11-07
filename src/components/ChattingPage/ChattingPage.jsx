@@ -6,13 +6,9 @@ import './ChattingPage.css';
 import TimelineChat from './TimelineChat/TimelineChat';
 import TotalChat from './TotalChat/TotalChat';
 
-export const socket = io('http://localhost:3000', {
+export const socket = io(import.meta.env.VITE_BACK_URL || 'http://localhost:3000/', {
   transports: ['websocket'],
 });
-
-// export const socket = io('http://43.203.186.58:3000', {
-//   transports: ['websocket', 'polling'],
-// });
 
 const ChatMode = {
   TIMELINE: 'timeline',

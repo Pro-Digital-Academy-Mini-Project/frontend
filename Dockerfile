@@ -13,7 +13,10 @@ RUN npm install
 # 6. Copy the rest of the source code to the container's working directory
 COPY . .
 
-# 7. Build your TypeScript code
+# 환경 변수 설정
+ARG VITE_BACK_URL
+ENV VITE_BACK_URL=${VITE_BACK_URL}
+
 RUN npm run build
 
 # Use the official Nginx base image
