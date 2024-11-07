@@ -1,7 +1,9 @@
 import axios from 'axios';
-const BASE_URL = 'http://localhost:3000';
+import { BASE_URL } from './api';
 
 async function getRooms(page = 1, room_name = '') {
+  console.log('BASE_URL:', BASE_URL);
+  console.log('Vite Environment Variables:', import.meta.env);
   const response = await axios.get(`${BASE_URL}/rooms`, {
     params: { page, room_name }, // Send page and room_name as query parameters
   });

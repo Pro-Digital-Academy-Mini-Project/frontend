@@ -46,8 +46,22 @@
 .message-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-  gap: 15px;
+  margin: 10px 0;
+}
+
+.message-item.right {
+  flex-direction: row-reverse; /* 오른쪽 정렬을 위해 방향을 반대로 설정 */
+}
+
+.message-content {
+  max-width: 70%; /* 메시지의 최대 너비 */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.message-item.right .message-content {
+  /* background-color: #434343; 사용자 메시지 배경색 */
+  text-align: right;
 }
 
 /* 사용자 아바타 */
@@ -59,13 +73,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
+  margin-left: 10px; /* 기본 여백 */
+}
+
+.message-item.right .user-avatar {
+  margin-left: 0; /* 오른쪽 정렬 시 여백 제거 */
+  margin-right: 10px; /* 오른쪽 여백 추가 */
 }
 
 /* 메시지 콘텐츠 */
 .message-content {
+  margin: 0.5em;
   flex: 1;
 }
 

@@ -1,61 +1,22 @@
 import { useEffect, useState, useRef } from 'react';
-import { io } from 'socket.io-client';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './TimelineChat.css';
 import { socket } from '../ChattingPage';
+import { BASE_URL } from '../../../lib/api/api';
 
-// const socket = io('http://localhost:3000', {
-//   transports: ['websocket', 'polling'],
-// });
-
-// export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime = 0 }) {
-export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
+export default function TimelineChat({ roomId, currentTime }) {
   const [message, setMessage] = useState('');
   const [timelineComments, setTimelineComments] = useState([]); // [{time: number, message: string, userId: string}]
-  const [currentTime, setCurrentTime] = useState(0); // 비디오 현재 시간
   const [currentRoomId, setCurrentRoomId] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false); // 재생 상태를 관리하는 state 추가
   const [visibleComments, setVisibleComments] = useState([]);
-  const [username, setUsername] = useState('testuser');
+  const [username] = useState(localStorage.getItem('username'));
   const messageContainerRef = useRef(null);
-
-  // 타이머 함수 추가
-  useEffect(() => {
-    let timer;
-
-    if (isPlaying) {
-      timer = setInterval(() => {
-        setCurrentTime((prevTime) => prevTime + 1);
-      }, 1000);
-    }
-
-    // 컴포넌트 언마운트 또는 isPlaying이 false가 될 때 타이머 정리
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, [isPlaying]);
-
-  // 재생/일시정지 토글 함수
-  const togglePlay = () => {
-    setIsPlaying((prev) => !prev);
-  };
-
-  // 시간 초기화 함수
-  const resetTimer = () => {
-    setCurrentTime(0);
-    setIsPlaying(false);
-  };
 
   // 초기 타임라인 댓글 로드
   useEffect(() => {
     const fetchTimelineComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/timelinecomment/${roomId}`);
-        console.log(response.data);
-        // 시간 순으로 정렬
+        const response = await axios.get(`${BASE_URL}/timelinecomment/${roomId}`);
         const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
         setTimelineComments(sortedComments);
       } catch (error) {
@@ -67,7 +28,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
   }, [roomId]);
 
   useEffect(() => {
-    // socket.off('receiveTimeLineMessage');
+    socket.off('receiveTimeLineMessage');
 
     setCurrentRoomId(roomId);
 
@@ -83,33 +44,15 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
             content: data.message,
           },
         ];
+        // 정렬된 댓글 목록 반환
         return newComments.sort((a, b) => a.timestamp - b.timestamp);
       });
     });
 
     return () => {
-      // if (currentRoomId) {
-      //   socket.emit('leaveTimeLineRoom', currentRoomId);
-      // }
       socket.off('receiveTimeLineMessage');
     };
-  }, [roomId, currentRoomId]);
-
-  useEffect(() => {
-    const token = localStorage.getItem('auth-token');
-    if (token) {
-      // 사용자 정보를 가져오는 API 호출
-      axios
-        .get('http://localhost:3000/user/me', {
-          headers: { Authorization: token },
-        })
-        .then((response) => setUsername(response.data.username))
-        .catch((error) => {
-          console.error('사용자 정보 로드 실패:', error);
-          console.log(username);
-        });
-    }
-  }, []);
+  }, [roomId]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -123,8 +66,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
 
       try {
         // DB에 저장
-        await axios.post('http://localhost:3000/timelinecomment', newTimelineComment);
-
+        await axios.post(`${BASE_URL}/timelinecomment`, newTimelineComment);
         // 소켓으로 전송
         socket.emit('sendTimeLineMessage', {
           username: username,
@@ -144,11 +86,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     setVisibleComments(timelineComments.filter((comment) => comment.timestamp <= currentTime));
   }, [currentTime, timelineComments]);
 
-  // 2초 앞으로 이동하는 함수 추가
-  const skipBackward = () => {
-    setCurrentTime((prevTime) => prevTime - 2);
-  };
-
   // 스크롤 자동 이동 함수
   const scrollToBottom = () => {
     if (messageContainerRef.current) {
@@ -156,10 +93,10 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     }
   };
 
-  // visibleComments가 변경될 때마다 스크롤
+  // scrollHeight가 변경될 때 스크롤 이동
   useEffect(() => {
     scrollToBottom();
-  }, [visibleComments]);
+  }, [messageContainerRef.current?.scrollHeight]);
 
   // 상단에 함수 추가
   const generateColor = (username) => {
@@ -180,18 +117,38 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     return username.slice(0, 2).toUpperCase();
   };
 
+  const formatTimestamp = (timestamp) => {
+    const totalSeconds = Math.floor(timestamp);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+      return `${hours}시간 ${minutes}분 ${seconds}초`;
+    } else if (minutes > 0) {
+      return `${minutes}분 ${seconds}초`;
+    }
+    return `${seconds}초`;
+  };
+
+  const handleTimestampClick = (timestamp) => {
+    // seekToTime(timestamp);
+  };
+
   return (
     <div className="timeline-container">
       <div ref={messageContainerRef} className="message-container">
         {visibleComments.map((comment, index) => (
-          <div key={index} className="message-item">
+          <div key={index} className={`message-item ${comment.username === username ? 'right' : ''}`}>
             <div className="user-avatar" style={{ backgroundColor: generateColor(comment.username) }}>
               {getInitials(comment.username)}
             </div>
             <div className="message-content">
               <div className="message-header">
                 <span className="username">{comment.username}</span>
-                <span className="timestamp">{comment.timestamp}초전</span>
+                <span className="timestamp" onClick={() => handleTimestampClick(comment.timestamp)}>
+                  {formatTimestamp(comment.timestamp)}
+                </span>
               </div>
               <div>{comment.content}</div>
             </div>
@@ -200,19 +157,6 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
       </div>
 
       <div className="sub-container">
-        <div className="controls-container">
-          <button className="control-button" onClick={skipBackward}>
-            -2초
-          </button>
-          <button className="control-button" onClick={togglePlay}>
-            {isPlaying ? '일시정지' : '재생'}
-          </button>
-          <button className="control-button" onClick={resetTimer}>
-            초기화
-          </button>
-          <span style={{ color: '#666' }}>현재 시간: {currentTime}초</span>
-        </div>
-
         <div className="input-container">
           <form onSubmit={sendMessage} className="message-form">
             <input

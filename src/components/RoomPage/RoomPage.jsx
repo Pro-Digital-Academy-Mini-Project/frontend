@@ -8,6 +8,7 @@ import { getRoomById } from '../../lib/api/room';
 import PrivateModal from './PrivateModal';
 import axios from 'axios';
 import ChattingPage from '../ChattingPage/ChattingPage';
+import { BASE_URL } from '../../lib/api/api';
 
 export default function RoomPage() {
   const { roomId } = useParams();
@@ -15,9 +16,10 @@ export default function RoomPage() {
   const [videoId, setVideoId] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [show, setShow] = useState(true);
+  const [currentTime, setCurrentTime] = useState(0);
+
   const handleAuth = () => setIsAuthenticated((prev) => !prev);
   const handleClose = () => setShow(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,19 +35,18 @@ export default function RoomPage() {
     bringRoom();
   }, []);
 
-  //
   useEffect(() => {
     if (roomInfo.room_video_id) {
       setVideoId(String(roomInfo.room_video_id || ''));
     }
   }, [roomInfo]);
 
-  //비밀번호 확인
+  // 비밀번호 확인
   const handlePasswordSubmit = async (password) => {
     try {
-      const response = await axios.post(`http://localhost:3000/rooms/verify-password`, {
-        roomId: roomId,
-        password,
+      const response = await axios.post(`${BASE_URL}/rooms/verify-password`, {
+        roomId: roomInfo.roomId,
+        password: password,
       });
       if (response.data.isValid) {
         handleAuth();
@@ -60,20 +61,28 @@ export default function RoomPage() {
     }
   };
 
+  const updateCurrentTime = (time) => {
+    setCurrentTime(time);
+  };
+
   return (
     <div>
-      <h1>{roomInfo.room_name}</h1>
       {roomInfo.is_private && !isAuthenticated ? (
         <div>
-          {/**private인 경우 비밀번호 확인**/}
+          {/** private인 경우 비밀번호 확인 **/}
           <PrivateModal show={show} handleAuth={handleAuth} handlePasswordSubmit={handlePasswordSubmit} />
         </div>
       ) : (
-        <div>
-          {/** public or 비밀번호 확인 후 기존 페이지**/}
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <VideoPage video_id={videoId} />
-            <ChattingPage roomId={roomId} />
+        // public or 비밀번호 확인 후 기존 페이지
+        <div className="flex h-screen bg-black">
+          {/* Video section - takes up 70% of the width */}
+          <div className="w-[75%] h-full">
+            <VideoPage video_id={videoId} updateCurrentTime={updateCurrentTime} />
+          </div>
+
+          {/* Chat section - takes up 30% of the width */}
+          <div className="w-[25%] h-full border-l border-gray-800">
+            <ChattingPage roomId={roomId} currentTime={currentTime} setCurrentTime={setCurrentTime} />
           </div>
         </div>
       )}

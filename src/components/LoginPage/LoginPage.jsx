@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { BASE_URL } from '../../lib/api/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/users/login',
+        `${BASE_URL}/users/login`,
         { email, password },
         {
           withCredentials: true,
