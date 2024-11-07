@@ -40,7 +40,7 @@ export default function MainPage() {
     <>
       {/** Title & Search*/}
       <div>
-        <h2>{username}의 함께 볼 때 더 즐거운 순간들</h2>
+      <h2>{username ? username : '익명'}의 함께 볼 때 더 즐거운 순간들</h2>
         <div>
           <input
             type="text"
