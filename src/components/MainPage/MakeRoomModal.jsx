@@ -4,26 +4,39 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { postRooms } from '../../lib/api/room';
 import { useNavigate } from 'react-router-dom';
-import { postVideo } from '../../lib/api/video';
 
 export default function MakeRoomModal(props) {
-  const [roomInfo, setRoomInfo] = useState({ name: '', password: '', is_private: false, video_id: '' });
+  const [roomInfo, setRoomInfo] = useState({
+    name: '',
+    password: '',
+    is_private: false,
+    video_url_id: '',
+    owner_name: '',
+  });
   const [videoUrl, setVideoUrl] = useState('');
   const navigate = useNavigate();
 
   const makeRoom = async () => {
-    const video_id = extractVideoId(videoUrl);
-    const video_response = await postVideo(video_id);
-    if (video_response._id) {
-      roomInfo.video_id = video_response._id;
-      setRoomInfo(roomInfo);
-      const response = await postRooms(roomInfo);
-      if (response._id) {
-        alert('성공적으로 방이 생성되었습니다!');
-        navigate(`/room/${response._id}`);
-      }
+    const updatedRoomInfo = {
+      ...roomInfo,
+      video_url_id: extractVideoId(videoUrl), // videoUrl에서 추출
+      owner_name: localStorage.getItem('username'), // 로컬 스토리지에서 가져오기
+    };
+    setRoomInfo(updatedRoomInfo);
+
+    const response = await postRooms(updatedRoomInfo);
+
+    if (response) {
+      //response로 room_id만 받음
+      console.log(response);
+      alert('성공적으로 방이 생성되었습니다');
+      navigate(`/room/${response}`);
+    } else {
+      alert('방 생성에 실패했습니다...');
+      navigate('/');
     }
   };
+
   function extractVideoId(url) {
     const regex =
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)?|youtu\.be\/)([^&\n?#]+)/;
