@@ -7,16 +7,12 @@ const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUserName] = useState(() => localStorage.getItem('username'));
 
-
-  
- 
-
   const login = (username) => {
     // 로그인 처리 후 상태 업데이트
     setIsLoggedIn(true);
     localStorage.setItem('username', username);
     setUserName(username);
-    alert('로그인 성공');
+    alert('성공적으로 로그인되었습니다!');
   };
 
   const logout = async () => {
@@ -26,13 +22,13 @@ const AuthProvider = ({ children }) => {
         method: 'POST',
         credentials: 'include', // 쿠키를 함께 보내기 위해 사용
       });
-  
+
       if (response.ok) {
         // 로그아웃 성공 시 상태 업데이트
         setIsLoggedIn(false);
         localStorage.removeItem('username'); // username 제거
-        setUserName("익명");
-        alert("로그아웃 성공");
+        setUserName('익명');
+        alert('로그아웃되었습니다');
       } else {
         console.error('로그아웃 실패');
       }

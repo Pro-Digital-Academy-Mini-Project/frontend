@@ -20,13 +20,7 @@ const NavBar = ({ brandTitle, offCanvasTitle }) => {
   }, []);
 
   return (
-    <Navbar
-      expand={EXPAND_BREAKPOINT}
-      className="mb-3"
-      sticky="top"
-      bg="dark"
-      variant="dark"
-    >
+    <Navbar expand={EXPAND_BREAKPOINT} sticky="top">
       <Container fluid>
         <Navbar.Brand href="#">{brandTitle}</Navbar.Brand>
         <Navbar.Toggle aria-controls={`Navbar-expand-${EXPAND_BREAKPOINT}`} />
@@ -35,52 +29,33 @@ const NavBar = ({ brandTitle, offCanvasTitle }) => {
           aria-labelledby={`NavbarLabel-expand-${EXPAND_BREAKPOINT}`}
           placement="end"
         >
+          {/** 로고 */}
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id={`NavbarLabel-expand-${EXPAND_BREAKPOINT}`}>
               {offCanvasTitle || brandTitle}
             </Offcanvas.Title>
           </Offcanvas.Header>
 
-          <Offcanvas.Body className="flex-row-reverse">
-            <Nav className={`justify-content-around flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}>
-              {/* 로그인 상태일 때만 로그아웃 버튼 표시 */}
-              {isLoggedIn && (
-                <Nav.Link
-                  as="div"
-                  className="flex-grow-1 text-center border border-dark border-end-0"
-                  onClick={() => {
-                    logout();
-                  }}
-                >
+          <Offcanvas.Body className="d-flex justify-content-end">
+            <Nav className={`flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}>
+              {isLoggedIn ? (
+                <Nav.Link as="div" className="text-center border border-dark px-3 mx-2 rounded" onClick={logout}>
                   로그아웃
                 </Nav.Link>
-              )}
-
-              {/* 로그인/회원가입 버튼은 로그인 상태에 따라 다르게 표시 */}
-              {!isLoggedIn && (
+              ) : (
                 <>
-                  <Nav.Link
-                    as="div"
-                    className="flex-grow-1 text-center border border-dark border-end-0"
-                  >
-                    <Link to="/login" state={{ redirect: 'redirectUri' }}>
+                  <Nav.Link as="div" className="text-center px-3 mx-2">
+                    <Link to="/login" state={{ redirect: 'redirectUri' }} className="text-decoration-none text-white">
                       로그인
                     </Link>
                   </Nav.Link>
-                  <Nav.Link
-                    as="div"
-                    className="flex-grow-1 text-center border border-dark"
-                  >
-                    <Link to="/signup" state={{ redirect: 'redirectUri' }}>
+                  <Nav.Link as="div" className="text-center px-3 mx-2 rounded">
+                    <Link to="/signup" state={{ redirect: 'redirectUri' }} className="text-decoration-none text-white">
                       회원가입
                     </Link>
                   </Nav.Link>
                 </>
               )}
-            </Nav>
-            <Nav className="justify-content-start flex-grow-1 pe-3">
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="#action2">게시판</Nav.Link>
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
