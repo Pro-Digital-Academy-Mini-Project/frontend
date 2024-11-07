@@ -13,6 +13,7 @@ export default function TotalChat({ roomId }) {
     const fetchTotalComments = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/Comment/${roomId}`);
+        const response = await axios.get(`http://localhost:3000/api/Comment/${roomId}`);
         console.log(response.data);
         setMessages(response.data);
       } catch (error) {

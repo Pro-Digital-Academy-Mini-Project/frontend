@@ -1,6 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { io } from 'socket.io-client';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './TimelineChat.css';
 import { socket } from '../ChattingPage';
@@ -53,7 +51,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
   useEffect(() => {
     const fetchTimelineComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/timelinecomment/${roomId}`);
+        const response = await axios.get(`http://localhost:3000/api/timelinecomment/${roomId}`);
         console.log(response.data);
         // 시간 순으로 정렬
         const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
@@ -100,7 +98,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
     if (token) {
       // 사용자 정보를 가져오는 API 호출
       axios
-        .get('http://localhost:3000/user/me', {
+        .get('http://localhost:3000/api/user/me', {
           headers: { Authorization: token },
         })
         .then((response) => setUsername(response.data.username))
@@ -123,7 +121,7 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770' }) {
 
       try {
         // DB에 저장
-        await axios.post('http://localhost:3000/timelinecomment', newTimelineComment);
+        await axios.post('http://localhost:3000/api/timelinecomment', newTimelineComment);
 
         // 소켓으로 전송
         socket.emit('sendTimeLineMessage', {

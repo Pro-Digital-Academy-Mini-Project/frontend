@@ -1,5 +1,6 @@
 import axios from 'axios';
-const BASE_URL = 'http://localhost:3000';
+
+const BASE_URL = 'http://localhost:3000/api';
 
 async function getRooms(page = 1, room_name = '') {
   const response = await axios.get(`${BASE_URL}/rooms`, {
