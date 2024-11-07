@@ -16,7 +16,7 @@ export default function MainPage() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { username  } = useAuth();
+  const { username } = useAuth();
 
   useEffect(() => {
     searchRooms();
@@ -37,30 +37,39 @@ export default function MainPage() {
     setRoomArr(data);
   };
   return (
-    <>
-      {/** Title & Search*/}
-      <div>
-      <h2 className="text-3xl font-bold text-blue-600">{username ? username : '익명'}의 함께 볼 때 더 즐거운 순간들</h2>
-        <div>
-          <input
-            type="text"
-            placeholder="방 검색하기"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
-          <button
-            onClick={() => {
-              searchRooms();
-            }}
-          >
-            방 검색하기
-          </button>
-          <button
-            onClick={() => {
-              handleShow();
-            }}
-          >
+    <div className="absolute inset-0 h-screen flex flex-col bg-black text-white overflow-hidden space-y-10">
+      {/* Header */}
+      <div className="flex flex-col items-center mt-40">
+        <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4">
+          {username ? `${username}의 함께 볼 때 더 즐거운 순간들` : '익명의 함께 볼 때 더 즐거운 순간들'}
+        </h2>
+        <div className="flex items-center space-x-2">
+          <div className="flex px-2 py-2 justify-center rounded-full w-64 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input
+              type="text"
+              className="focus:outline-none"
+              placeholder="방 검색하기"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button className="flex items-center justify-center" onClick={() => searchRooms()}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-7 text-blue-600 hover:text-blue-900"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11 4a7 7 0 110 14 7 7 0 010-14zM21 21l-4.35-4.35"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <button onClick={handleShow} className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white ml-4">
             방 만들기
           </button>
         </div>
