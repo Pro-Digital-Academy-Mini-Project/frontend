@@ -6,7 +6,6 @@ import MessageInput from './MessageInput';
 import { socket } from '../ChattingPage';
 
 export default function TotalChat({ roomId }) {
-  console.log('지원', roomId);
   const [messages, setMessages] = useState([]);
 
   //초기 전체 댓글 로드
@@ -26,6 +25,7 @@ export default function TotalChat({ roomId }) {
   //다른 사용자가 보낸 메시지 받기
   useEffect(() => {
     socket.on('receiveTotalMessage', (data) => {
+      console.log('user received total message');
       setMessages((prevMessages) => {
         return [
           ...prevMessages,
@@ -38,6 +38,11 @@ export default function TotalChat({ roomId }) {
         ];
       });
     });
+
+    return () => {
+      // socket.emit('leaveTimeLineRoom', currentRoomId);
+      socket.off('receiveTotalMessage');
+    };
   }, [roomId]);
 
   return (
