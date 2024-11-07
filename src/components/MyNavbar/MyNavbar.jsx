@@ -9,15 +9,15 @@ const EXPAND_BREAKPOINT = 'md';
 const NavBar = ({ brandTitle, offCanvasTitle }) => {
   const { isLoggedIn, logout, setIsLoggedIn } = useAuth();
 
-  // 쿠키에서 로그인 상태 초기화 설정
-  useEffect(() => {
-    const token = Cookies.get('authToken');
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  // // 쿠키에서 로그인 상태 초기화 설정
+  // useEffect(() => {
+  //   const token = Cookies.get('authToken');
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     setIsLoggedIn(false);
+  //   }
+  // }, []);
 
   return (
     <Navbar
