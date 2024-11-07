@@ -3,18 +3,13 @@ import axios from 'axios';
 import './TimelineChat.css';
 import { socket } from '../ChattingPage';
 
-// const socket = io('http://localhost:3000', {
-//   transports: ['websocket', 'polling'],
-// });
-
-export default function TimelineChat({ roomId = '6729cc69aac836f825227770', currentTime }) {
+export default function TimelineChat({ roomId, currentTime }) {
   const [message, setMessage] = useState('');
   const [timelineComments, setTimelineComments] = useState([]); // [{time: number, message: string, userId: string}]
   const [currentRoomId, setCurrentRoomId] = useState(null);
   const [visibleComments, setVisibleComments] = useState([]);
   const [username] = useState(localStorage.getItem('username'));
   const messageContainerRef = useRef(null);
-  const [newCommentAdded, setNewCommentAdded] = useState(false); // 새로운 댓글 추가 여부
 
   // 초기 타임라인 댓글 로드
   useEffect(() => {
@@ -97,13 +92,10 @@ export default function TimelineChat({ roomId = '6729cc69aac836f825227770', curr
     }
   };
 
-  // visibleComments가 변경될 때 스크롤 이동
+  // scrollHeight가 변경될 때 스크롤 이동
   useEffect(() => {
-    if (newCommentAdded) {
-      scrollToBottom();
-      setNewCommentAdded(false); // 플래그 초기화
-    }
-  }, [visibleComments, newCommentAdded]); // visibleComments와 newCommentAdded가 변경될 때 호출
+    scrollToBottom();
+  }, [messageContainerRef.current?.scrollHeight]);
 
   // 상단에 함수 추가
   const generateColor = (username) => {
