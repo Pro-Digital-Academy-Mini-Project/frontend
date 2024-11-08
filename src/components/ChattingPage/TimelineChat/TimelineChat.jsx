@@ -17,7 +17,7 @@ export default function TimelineChat({ roomId, currentTime }) {
   useEffect(() => {
     const fetchTimelineComments = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/timelinecomment/${roomId}`);
+        const response = await axios.get(`${BASE_URL}/api/timelinecomment/${roomId}`);
         const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
         setTimelineComments(sortedComments);
       } catch (error) {
@@ -73,7 +73,7 @@ export default function TimelineChat({ roomId, currentTime }) {
 
       try {
         // DB에 저장
-        await axios.post(`${BASE_URL}/timelinecomment`, newTimelineComment);
+        await axios.post(`${BASE_URL}/api/timelinecomment`, newTimelineComment);
         // 소켓으로 전송
         socket.emit('sendTimeLineMessage', {
           username: username,
@@ -149,66 +149,36 @@ export default function TimelineChat({ roomId, currentTime }) {
   };
 
   return (
-    // <div>
-    //   <div ref={messageContainerRef}>
-    //     {visibleComments.map((comment, index) => (
-    //       <div key={index} className={`message-item ${comment.username === username ? 'right' : ''}`}>
-    //         <div className="user-avatar" style={{ backgroundColor: generateColor(comment.username) }}>
-    //           {getInitials(comment.username)}
-    //         </div>
-    //         <div className="message-content">
-    //           <div className="message-header">
-    //             <span className="username">{comment.username}</span>
-    //             <span className="timestamp" onClick={() => handleTimestampClick(comment.timestamp)}>
-    //               {formatTimestamp(comment.timestamp)}
-    //             </span>
-    //           </div>
-    //           <div>{comment.content}</div>
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-    // {/* <div className="sub-container">
-    //   <div className="input-container">
-    //     <form onSubmit={sendMessage} className="message-form">
-    //       <input
-    //         type="text"
-    //         value={message}
-    //         onChange={(e) => setMessage(e.target.value)}
-    //         placeholder="메시지 보내기"
-    //         className="message-input"
-    //       />
-    //       <button type="submit" className="send-button">
-    //         ↑
-    //       </button>
-    //     </form>
-    //   </div>
-    // </div> */}
-
     <div className="flex flex-col h-screen text-white">
       {/* 채팅 메시지 목록 (내부 스크롤 적용) */}
       <div ref={messageContainerRef} className="flex-grow overflow-y-auto p-3 space-y-4 h-96 scrollbar-hide">
         {visibleComments.map((comment, index) => (
           <div key={index} className={`flex ${comment.username === username ? 'justify-end' : ''}`}>
             <div
-              className={`flex items-start space-x-2 ${comment.username === username ? 'flex-row-reverse text-right' : ''}`}
+              className={`flex items-start space-x-2 ${comment.username === username ? 'flex-row-reverse text-right space-x-reverse' : ''}`}
             >
               {/* 아바타 */}
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium text-white"
-                style={{ backgroundColor: generateColor(comment.username) }}
-              >
-                {getInitials(comment.username)}
+              <div className="flex-shrink-0">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium text-white"
+                  style={{ backgroundColor: generateColor(comment.username) }}
+                >
+                  {getInitials(comment.username)}
+                </div>
               </div>
 
               {/* 메시지 내용 */}
-              <div className="bg-gray-800 p-2 rounded-lg ">
-                <div className="text-sm font-semibold">{comment.username}</div>
+              <div className="bg-zinc-800 p-3 rounded-lg flex-grow">
                 <div
-                  className="text-xs text-gray-400 cursor-pointer"
-                  onClick={() => handleTimestampClick(comment.timestamp)}
+                  className={`flex items-center space-x-2 ${comment.username === username ? 'flex-row-reverse text-right space-x-reverse' : ''}`}
                 >
-                  {formatTimestamp(comment.timestamp)}
+                  <div className="flex items-center text-sm font-semibold">{comment.username}</div>
+                  <div
+                    className="flex  items-center text-xs text-gray-400 cursor-pointer"
+                    onClick={() => handleTimestampClick(comment.timestamp)}
+                  >
+                    {formatTimestamp(comment.timestamp)}
+                  </div>
                 </div>
                 <div className="mt-1">{comment.content}</div>
               </div>
@@ -232,30 +202,13 @@ export default function TimelineChat({ roomId, currentTime }) {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="2"
+              strokeWidth="2"
               stroke="currentColor"
-              class="size-6 text-blue-600 hover:text-blue-900"
+              className="size-6 text-blue-600 hover:text-blue-900"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
             </svg>
           </button>
-
-          {/* <button className="flex items-center justify-center" onClick={() => searchRooms()}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-7 text-blue-600 hover:text-blue-900"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M11 4a7 7 0 110 14 7 7 0 010-14zM21 21l-4.35-4.35"
-              />
-            </svg>
-          </button> */}
         </form>
       </div>
     </div>

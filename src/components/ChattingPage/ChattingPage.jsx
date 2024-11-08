@@ -30,6 +30,7 @@ export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
     });
 
     return () => {
+      socket.emit('leaveRoom', roomId);
       socket.off('receiveMessage');
     };
   }, [roomId]);

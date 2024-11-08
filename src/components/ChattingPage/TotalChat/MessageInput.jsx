@@ -7,6 +7,7 @@ import { socket } from '../ChattingPage';
 
 export default function MessageInput({ roomId }) {
   const [message, setMessage] = useState('');
+  const [username] = useState(localStorage.getItem('username'));
 
   //메시지 보내기
   const sendMessage = async (e) => {
@@ -15,7 +16,7 @@ export default function MessageInput({ roomId }) {
     e.preventDefault();
     if (message && roomId) {
       const newComment = {
-        username: 'user1',
+        username: username,
         room_id: roomId,
         content: message,
         created_at: currentDate,
@@ -23,10 +24,10 @@ export default function MessageInput({ roomId }) {
 
       try {
         // DB에 저장
-        await axios.post(`${BASE_URL}/Comment`, newComment);
+        await axios.post(`${BASE_URL}/api/Comment`, newComment);
         // 소켓으로 전송
         socket.emit('sendTotalMessage', {
-          username: 'user1',
+          username: newComment.username,
           roomId: newComment.room_id,
           content: newComment.content,
           created_at: currentDate,
@@ -54,11 +55,11 @@ export default function MessageInput({ roomId }) {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="2"
+            strokeWidth="2"
             stroke="currentColor"
-            class="size-6 text-blue-600 hover:text-blue-900"
+            className="size-6 text-blue-600 hover:text-blue-900"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
           </svg>
         </button>
       </form>
