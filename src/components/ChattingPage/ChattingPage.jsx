@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { Nav } from 'react-bootstrap';
-import { IMG_URL } from '../../lib/img';
+import { useNavigate } from 'react-router-dom';
 
 import './ChattingPage.css';
 import TimelineChat from './TimelineChat/TimelineChat';
@@ -19,36 +19,42 @@ const ChatMode = {
 export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
   const [roomUserCount, setRoomUserCount] = useState(0);
   const [chatMode, setChatMode] = useState(ChatMode.TIMELINE);
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.emit('joinRoom', roomId);
 
     socket.on('roomUserCount', (msg) => {
       setRoomUserCount(msg);
-      console.log('접속자수:', msg);
+      // console.log('접속자수:', msg);
     });
 
     return () => {
-      if (roomId) {
-        socket.emit('leaveRoom', roomId);
-      }
       socket.off('receiveMessage');
     };
   }, [roomId]);
 
+  const moveToMain = () => {
+    socket.emit('leaveRoom', roomId);
+    navigate('/');
+  };
+
   return (
     <div className="flex flex-col h-full bg-[#1a1a1a] text-white">
       {/* Header with logo and user count */}
-      <div className="p-3 flex justify-between items-center border-b border-gray-800">
-        <div className="text-[#3b82f6] font-bold text-xl">VIEWMATE</div>
+      <div className="p-2 flex justify-between items-center border-b border-gray-800">
+        <img src="../../../public/img/logo.png" alt="Logo icon" className="w-1/2" />
       </div>
       {/* user count & 나가기 */}
-      <div className="p-3 flex justify-between items-center border-b border-gray-800">
-        <div className="flex items-center gap-2 text-sm text-gray-400">
+      <div className="p-2 flex justify-between items-center border-b border-gray-800">
+        <div className="flex items-center gap-2 text-sm ">
           <img src={`/img/user-icon2.png`} width="20" alt="User icon" className="w-5 h-5" />
-          <span>{roomUserCount}</span>
+          <span className="font-bold">{roomUserCount}</span>
         </div>
-        <button className="px-3 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button
+          className="px-3 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onClick={() => moveToMain()}
+        >
           나가기
         </button>
       </div>
@@ -78,31 +84,6 @@ export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
         </nav>
       </div>
       {/* Chat content */}
-      <div className="flex-grow overflow-y-auto">
-        {chatMode === ChatMode.TIMELINE ? <TimelineChat roomId={roomId} /> : <TotalChat roomId={roomId} />}
-      </div>
-      {/* <div>
-        <span>
-          <p>{roomId}</p>
-          <p>
-            <img src="../../../public/img/user-icon2.png" width="20" />
-            &nbsp;{roomUserCount}
-          </p>
-        </span>
-        <Nav className="nav-items" activeKey={chatMode} onSelect={(selectedKey) => setChatMode(selectedKey)}>
-          <Nav.Item>
-            <Nav.Link eventKey={ChatMode.TIMELINE} className={chatMode === ChatMode.TIMELINE ? 'active' : ''}>
-              타임라인
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey={ChatMode.TOTAL} className={chatMode === ChatMode.TOTAL ? 'active' : ''}>
-              전체
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </div> */}
-
       {chatMode === ChatMode.TIMELINE ? (
         <TimelineChat roomId={roomId} currentTime={currentTime} setCurrentTime={setCurrentTime} />
       ) : (
