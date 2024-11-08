@@ -89,7 +89,7 @@ export default function TimelineChat({ roomId, currentTime }) {
         // Optional: Delay navigation or other actions to ensure the toast is displayed
         setTimeout(() => {
           // Perform any actions like navigation or state updates here
-        }, 3000); // 3-second delay to ensure toast is shown
+        }, 2000); // 3-second delay to ensure toast is shown
       }
     }
   };

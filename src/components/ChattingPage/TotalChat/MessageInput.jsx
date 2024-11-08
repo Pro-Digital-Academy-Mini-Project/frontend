@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../../../lib/api/api';
-
+import { toast } from 'react-toastify';
 import { socket } from '../ChattingPage';
 
 export default function MessageInput({ roomId }) {
@@ -14,6 +14,11 @@ export default function MessageInput({ roomId }) {
     const currentDate = new Date();
 
     e.preventDefault();
+
+    if (!username) {
+      toast.error('로그인 후 사용해 주세요.');
+      return;
+    }
     if (message && roomId) {
       const newComment = {
         username: username,
@@ -35,6 +40,12 @@ export default function MessageInput({ roomId }) {
         setMessage('');
       } catch (error) {
         console.error('댓글 저장 실패:', error);
+        toast.error('댓글을 저장하지 못했습니다. 다시 시도해 주세요.');
+
+        // Optional: Delay navigation or other actions to ensure the toast is displayed
+        setTimeout(() => {
+          // Perform any actions like navigation or state updates here
+        }, 2000); // 3-second delay to ensure toast is shown
       }
     }
   };
