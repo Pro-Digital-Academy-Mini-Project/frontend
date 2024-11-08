@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../../lib/api/api';
+import { BASE_URL } from '../../lib/api/api.js';
 import { toast } from 'react-toastify';
 import { IMG_URL } from '../../lib/img';
 

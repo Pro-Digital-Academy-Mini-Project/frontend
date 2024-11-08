@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import MessageInput from './MessageInput';
 import { socket } from '../ChattingPage';
-import { BASE_URL } from '../../../lib/api/api';
+import { BASE_URL } from '../../../lib/api/api.js';
 
 export default function TotalChat({ roomId }) {
   const [messages, setMessages] = useState([]);

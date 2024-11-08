@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
-import { BASE_URL } from '../../lib/api/api';
+import { BASE_URL } from '../../lib/api/api.js';
 import { toast } from 'react-toastify';
 
 // Context 생성

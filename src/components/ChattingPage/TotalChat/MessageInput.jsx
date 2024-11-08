@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import { BASE_URL } from '../../../lib/api/api';
+import { BASE_URL } from '../../../lib/api/api.js';
 
 import { socket } from '../ChattingPage';
 
