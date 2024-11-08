@@ -43,12 +43,12 @@ export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
     <div className="flex flex-col h-full bg-[#1a1a1a] text-white">
       {/* Header with logo and user count */}
       <div className="p-2 flex justify-between items-center border-b border-gray-800">
-        <img src="../../../public/img/logo.png" alt="Logo icon" className="w-1/2" />
+        <img src={`/img/logo.png`} alt="Logo icon" className="w-1/2" />
       </div>
       {/* user count & 나가기 */}
       <div className="p-2 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center gap-2 text-sm ">
-          <img src="../../../public/img/user-icon2.png" width="20" alt="User icon" className="w-5 h-5" />
+          <img src={`/img/user-icon2.png`} width="20" alt="User icon" className="w-5 h-5" />
           <span className="font-bold">{roomUserCount}</span>
         </div>
         <button
