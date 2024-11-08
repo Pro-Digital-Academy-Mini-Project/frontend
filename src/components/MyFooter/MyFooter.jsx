@@ -1,30 +1,29 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
-import { Facebook, Instagram } from 'react-bootstrap-icons';
+import { Github } from 'react-bootstrap-icons';
 
-export default function MyFooter({ brandTitle }) {
+export default function MyFooter() {
   return (
-    <Container fluid className="py-4 bg-black border-top text-white">
-      <Container className="d-flex justify-content-between align-items-center" as="footer">
-        <div className="d-flex align-items-center">
-          <a href="/" className="mb-3 me-3 mb-md-0 text-white text-decoration-none lh-1">
-            {brandTitle}
+    <footer className="py-4 bg-black border-t border-gray-700 text-white">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <a href="/" className="text-white text-lg font-semibold">
+            WeTube
           </a>
-          <span className="mb-3 mb-md-0 ">© 2024 , Inc</span>
+          <span>© 2024. 서현, 건욱, 지원, 성은. All rights reserved</span>
         </div>
-        <ul className="nav justify-content-end list-unstyled d-flex">
-          <li className="ms-3">
-            <a href="#" aria-label="Instagram">
-              <Instagram size={24} />
-            </a>
-          </li>
-          <li className="ms-3">
-            <a href="#" aria-label="Facebook">
-              <Facebook size={24} />
-            </a>
-          </li>
-        </ul>
-      </Container>
-    </Container>
+        <div className="flex space-x-4">
+          <a
+            href="https://github.com/Pro-Digital-Academy-Mini-Project"
+            aria-label="Github"
+            className="text-white hover:text-blue-500"
+          >
+            <Github size={24} />
+          </a>
+          {/* <a href="#" aria-label="Facebook" className="text-white hover:text-blue-500">
+            <Facebook size={24} />
+          </a> */}
+        </div>
+      </div>
+    </footer>
   );
 }
