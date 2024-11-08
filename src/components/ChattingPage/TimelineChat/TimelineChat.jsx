@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './TimelineChat.css';
 import { socket } from '../ChattingPage';
-import { BASE_URL } from '../../../lib/api/api';
+import { BASE_URL } from '../../../lib/api/api.js';
 
 export default function TimelineChat({ roomId, currentTime }) {
   const [message, setMessage] = useState('');
