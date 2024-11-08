@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { Nav } from 'react-bootstrap';
+import { IMG_URL } from '../../lib/img';
 
 import './ChattingPage.css';
 import TimelineChat from './TimelineChat/TimelineChat';
@@ -44,7 +45,7 @@ export default function ChattingPage({ roomId, currentTime, setCurrentTime }) {
       {/* user count & 나가기 */}
       <div className="p-3 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center gap-2 text-sm text-gray-400">
-          <img src="../../../public/img/user-icon2.png" width="20" alt="User icon" className="w-5 h-5" />
+          <img src={`/img/user-icon2.png`} width="20" alt="User icon" className="w-5 h-5" />
           <span>{roomUserCount}</span>
         </div>
         <button className="px-3 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
