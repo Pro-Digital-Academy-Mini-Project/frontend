@@ -6,7 +6,6 @@ import { BASE_URL } from '../../../lib/api/api';
 import { socket } from '../ChattingPage';
 
 export default function MessageInput({ roomId }) {
-  console.log('roomId:', roomId);
   const [message, setMessage] = useState('');
 
   //메시지 보내기
@@ -40,33 +39,29 @@ export default function MessageInput({ roomId }) {
   };
 
   return (
-    // {/* Search input */}
-    <div className="fixed bottom-0 p-3">
-      <div className="relative">
-        <form onSubmit={sendMessage}>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message"
-            className="w-full bg-[#2a2a2a] rounded-full py-2 pl-4 pr-20 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#3b82f6]"
-          />
-          {/* <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" type="submit">
-            Send
-          </button> */}
-        </form>
-      </div>
+    //  메시지 입력란 (화면 하단 고정)
+    <div className="flex mx-3 mb-3 px-2 py-2 rounded-full bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <form onSubmit={sendMessage} className="flex justify-between w-full">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type your message"
+          className="focus:outline-none w-10/12"
+        />
+        <button type="submit" className="flex items-center justify-center mx-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="size-6 text-blue-600 hover:text-blue-900"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
+          </svg>
+        </button>
+      </form>
     </div>
-    // <>
-    //   <form onSubmit={sendMessage}>
-    //     <input
-    //       type="text"
-    //       value={message}
-    //       onChange={(e) => setMessage(e.target.value)}
-    //       placeholder="Type your message"
-    //     />
-    //     <button type="submit">Send</button>
-    //   </form>
-    // </>
   );
 }
