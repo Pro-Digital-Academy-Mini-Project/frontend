@@ -24,6 +24,7 @@
     "react-dom": "^18.3.1",
     "react-lite-youtube-embed": "^2.4.0",
     "react-router-dom": "^6.27.0",
+    "react-toastify": "^10.0.6",
     "react-youtube": "^10.1.0",
     "socket.io-client": "^4.8.1",
     "sort-by": "^1.2.0",

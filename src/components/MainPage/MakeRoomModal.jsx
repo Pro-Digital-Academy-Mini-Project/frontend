@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { postRooms } from '../../lib/api/room';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function MakeRoomModal(props) {
   const [roomInfo, setRoomInfo] = useState({
@@ -29,10 +30,10 @@ export default function MakeRoomModal(props) {
     if (response) {
       //response로 room_id만 받음
       console.log(response);
-      alert('성공적으로 방이 생성되었습니다');
+      toast('성공적으로 방이 생성되었습니다');
       navigate(`/room/${response}`);
     } else {
-      alert('방 생성에 실패했습니다...');
+      toast('방 생성에 실패했습니다...');
       navigate('/');
     }
   };
