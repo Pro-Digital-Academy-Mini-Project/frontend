@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from './api';
+import { BASE_URL } from './api.js';
 
 async function getRooms(page = 1, room_name = '') {
   console.log('BASE_URL:', BASE_URL);

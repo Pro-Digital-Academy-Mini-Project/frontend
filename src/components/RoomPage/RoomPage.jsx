@@ -5,7 +5,7 @@ import { getRoomById } from '../../lib/api/room';
 import PrivateModal from './PrivateModal';
 import axios from 'axios';
 import ChattingPage from '../ChattingPage/ChattingPage';
-import { BASE_URL } from '../../lib/api/api';
+import { BASE_URL } from '../../lib/api/api.js';
 import { toast } from 'react-toastify';
 
 export default function RoomPage() {
