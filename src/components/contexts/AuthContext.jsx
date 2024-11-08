@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { BASE_URL } from '../../lib/api/api';
+import { toast } from 'react-toastify';
 
 // Context 생성
 const AuthContext = createContext();
@@ -28,13 +29,13 @@ const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
     localStorage.setItem('username', username);
     setUserName(username);
-    alert('성공적으로 로그인되었습니다!');
+    toast('성공적으로 로그인되었습니다!');
   };
 
   const logout = async () => {
     try {
       // 로그아웃 API 호출
-      const response = await fetch(`${BASE_URL}/users/logout`, {
+      const response = await fetch(`${BASE_URL}/api/users/logout`, {
         method: 'POST',
         credentials: 'include', // 쿠키를 함께 보내기 위해 사용
       });
@@ -44,7 +45,7 @@ const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
         localStorage.removeItem('username'); // username 제거
         setUserName('익명');
-        alert('로그아웃되었습니다');
+        toast('로그아웃되었습니다');
       } else {
         console.error('로그아웃에 실패했습니다');
       }

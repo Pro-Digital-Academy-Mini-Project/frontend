@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { BASE_URL } from '../../lib/api/api';
+import { IMG_URL } from '../../lib/img';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        `${BASE_URL}/users/login`,
+        `${BASE_URL}/api/users/login`,
         { email, password },
         {
           withCredentials: true,
@@ -43,7 +44,7 @@ export default function LoginPage() {
         <div
           className="flex-1 flex items-center justify-center  relative bg-cover bg-center"
           style={{
-            backgroundImage: 'url("../../../public/img/youtube-bg.jpg")',
+            backgroundImage: `url("/img/youtube-bg.jpg")`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
           }}

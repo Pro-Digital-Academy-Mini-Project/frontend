@@ -24,7 +24,7 @@ export default function MessageInput({ roomId }) {
 
       try {
         // DB에 저장
-        await axios.post(`${BASE_URL}/Comment`, newComment);
+        await axios.post(`${BASE_URL}/api/Comment`, newComment);
         // 소켓으로 전송
         socket.emit('sendTotalMessage', {
           username: newComment.username,

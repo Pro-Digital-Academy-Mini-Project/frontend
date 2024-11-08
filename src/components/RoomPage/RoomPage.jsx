@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import VideoPage from './VideoPage/VideoPage';
 import { getRoomById } from '../../lib/api/room';
 import PrivateModal from './PrivateModal';
 import axios from 'axios';
 import ChattingPage from '../ChattingPage/ChattingPage';
 import { BASE_URL } from '../../lib/api/api';
+import { toast } from 'react-toastify';
 
 export default function RoomPage() {
   const { roomId } = useParams();
@@ -28,7 +26,7 @@ export default function RoomPage() {
       if (data.room_name) {
         setRoomInfo(data);
       } else {
-        alert('방 정보를 불러오는데 실패했습니다');
+        toast('방 정보를 불러오는데 실패했습니다');
         navigate('/');
       }
     };
@@ -44,7 +42,7 @@ export default function RoomPage() {
   // 비밀번호 확인
   const handlePasswordSubmit = async (password) => {
     try {
-      const response = await axios.post(`${BASE_URL}/rooms/verify-password`, {
+      const response = await axios.post(`${BASE_URL}/api/rooms/verify-password`, {
         roomId: roomInfo.roomId,
         password: password,
       });
@@ -52,12 +50,12 @@ export default function RoomPage() {
         handleAuth();
         handleClose();
       } else {
-        alert('비밀번호가 틀렸습니다.');
+        toast('비밀번호가 틀렸습니다.');
         navigate('/');
       }
     } catch (error) {
       console.error('비밀번호 확인 오류:', error.response?.data || error.message);
-      alert('비밀번호 확인에 실패했습니다.');
+      toast('비밀번호 확인에 실패했습니다.');
     }
   };
 
