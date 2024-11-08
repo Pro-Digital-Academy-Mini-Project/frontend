@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../lib/api/api';
 import { toast } from 'react-toastify';
+import { IMG_URL } from '../../lib/img';
 
 export default function SignUpPage() {
   const [username, setUsername] = useState('');
@@ -39,7 +40,7 @@ export default function SignUpPage() {
       <div
         className="flex-1 flex items-center justify-center  relative bg-cover bg-center"
         style={{
-          backgroundImage: 'url("../../../public/img/youtube-bg.jpg")',
+          backgroundImage: `url("img/youtube-bg.jpg")`,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
         }}
