@@ -20,32 +20,42 @@ const NavBar = ({ brandTitle, offCanvasTitle }) => {
   // }, []);
 
   return (
-    <Navbar expand={EXPAND_BREAKPOINT} sticky="top">
+    <Navbar expand={EXPAND_BREAKPOINT} sticky="top" className="text-white bg-black">
       <Container fluid>
-        <Navbar.Brand href="#">{brandTitle}</Navbar.Brand>
-        <Navbar.Toggle aria-controls={`Navbar-expand-${EXPAND_BREAKPOINT}`} />
+        {/* 브랜드 및 로고 */}
+        <Navbar.Brand href="/">
+          <img src="/img/logo.png" alt="Logo" className="h-12 w-auto d-inline-block align-top" />
+        </Navbar.Brand>
+        <Navbar.Toggle
+          aria-controls={`Navbar-expand-${EXPAND_BREAKPOINT}`}
+          style={{ color: 'white', border: 'none' }} // style로 흰색 설정
+        />
         <Navbar.Offcanvas
           id={`Navbar-expand-${EXPAND_BREAKPOINT}`}
           aria-labelledby={`NavbarLabel-expand-${EXPAND_BREAKPOINT}`}
           placement="end"
+          style={{ backgroundColor: 'black' }} // 회색 배경 설정
         >
-          {/** 로고 */}
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id={`NavbarLabel-expand-${EXPAND_BREAKPOINT}`}>
-              {offCanvasTitle || brandTitle}
+              <img src="/img/logo.png" alt="Logo" className="h-8 w-auto" />
             </Offcanvas.Title>
           </Offcanvas.Header>
 
           <Offcanvas.Body className="d-flex justify-content-end">
-            <Nav className={`flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}>
+            <Nav className={`flex-col pb-4 pb-${EXPAND_BREAKPOINT}-0`}>
               {isLoggedIn ? (
-                <Nav.Link as="div" className="text-center text-white px-3 mx-2 rounded" onClick={logout}>
+                <Nav.Link as="div" className="text-center text-white px-3 mx-2 rounded cursor-pointer" onClick={logout}>
                   로그아웃
                 </Nav.Link>
               ) : (
                 <>
-                  <Nav.Link as="div" className="text-center px-3 mx-2">
-                    <Link to="/login" state={{ redirect: 'redirectUri' }} className="text-decoration-none text-white">
+                  <Nav.Link as="div" className="text-center px-3 mx-2 sm:">
+                    <Link
+                      to="/login"
+                      state={{ redirect: 'redirectUri' }}
+                      className="text-decoration-none text-white hover:text-blue-600"
+                    >
                       로그인
                     </Link>
                   </Nav.Link>
