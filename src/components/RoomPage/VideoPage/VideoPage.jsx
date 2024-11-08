@@ -35,7 +35,7 @@ export default function VideoPage({ video_id, updateCurrentTime }) {
     <div className="w-full h-full flex items-center justify-center bg-black">
       <div className="w-full h-0 pb-[56.25%] relative">
         <YouTube
-          videoId={video_id.video_id}
+          videoId={video_id}
           onReady={onReady} // 플레이어가 준비되면 호출
           opts={{
             width: '100%',

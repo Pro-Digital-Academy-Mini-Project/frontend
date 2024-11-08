@@ -39,7 +39,7 @@ const NavBar = ({ brandTitle, offCanvasTitle }) => {
           <Offcanvas.Body className="d-flex justify-content-end">
             <Nav className={`flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}>
               {isLoggedIn ? (
-                <Nav.Link as="div" className="text-center border border-dark px-3 mx-2 rounded" onClick={logout}>
+                <Nav.Link as="div" className="text-center text-white px-3 mx-2 rounded" onClick={logout}>
                   로그아웃
                 </Nav.Link>
               ) : (
