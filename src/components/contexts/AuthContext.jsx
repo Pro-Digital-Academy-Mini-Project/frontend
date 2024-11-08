@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // 로그아웃 API 호출
-      const response = await fetch(`${BASE_URL}/users/logout`, {
+      const response = await fetch(`${BASE_URL}/api/users/logout`, {
         method: 'POST',
         credentials: 'include', // 쿠키를 함께 보내기 위해 사용
       });

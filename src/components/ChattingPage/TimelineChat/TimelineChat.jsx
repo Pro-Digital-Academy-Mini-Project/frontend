@@ -16,7 +16,7 @@ export default function TimelineChat({ roomId, currentTime }) {
   useEffect(() => {
     const fetchTimelineComments = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/timelinecomment/${roomId}`);
+        const response = await axios.get(`${BASE_URL}/api/timelinecomment/${roomId}`);
         const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
         setTimelineComments(sortedComments);
       } catch (error) {
@@ -67,7 +67,7 @@ export default function TimelineChat({ roomId, currentTime }) {
       console.log(newTimelineComment);
       try {
         // DB에 저장
-        await axios.post(`${BASE_URL}/timelinecomment`, newTimelineComment);
+        await axios.post(`${BASE_URL}/api/timelinecomment`, newTimelineComment);
         // 소켓으로 전송
         socket.emit('sendTimeLineMessage', {
           username: username,
