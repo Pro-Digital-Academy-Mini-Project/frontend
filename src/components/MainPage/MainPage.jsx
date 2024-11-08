@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Card from 'react-bootstrap/Card';
 import { getRooms } from '../../lib/api/room';
 import MakeRoomModal from './MakeRoomModal';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +36,7 @@ export default function MainPage() {
     setRoomArr(data);
   };
   return (
-    <div className="absolute inset-0 h-screen flex flex-col bg-black text-white overflow-hidden space-y-10">
+    <div className="absolute inset-0 h-screen flex flex-col bg-black overflow-auto text-white py-10">
       {/* Header */}
       <div className="flex flex-col items-center mt-40">
         <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4">
@@ -76,26 +75,45 @@ export default function MainPage() {
       </div>
 
       {/* Room List */}
-      <div className="flex flex-wrap justify-center gap-6 px-4">
+      <div className="mt-10 grid gap-6 px-4 mx-10  lg:mx-36 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
         {roomArr.map((el, id) => {
-          console.log(el);
           return (
             <div
               key={id}
-              className="w-1/3 bg-gray-900 rounded-lg overflow-hidden shadow-lg cursor-pointer transform transition duration-200 hover:scale-105"
+              className="w-full h-72  rounded-lg overflow-hidden shadow-lg cursor-pointer transform transition duration-200 hover:scale-105"
               onClick={() => moveToRoom(el._id)}
             >
+              {/* 이미지 부분 */}
               <img
-                className="w-full h-36 object-cover"
+                className="w-full h-4/6 object-cover"
                 src={`https://img.youtube.com/vi/${el.video_id.video_url_id}/0.jpg`}
                 alt="Room Thumbnail"
               />
-              <div className="p-3 px-3">
+
+              {/* 텍스트 및 정보 부분 */}
+              <div className="bg-neutral-900 h-2/6 p-3 flex flex-col ">
                 <h3 className="text-lg font-semibold text-white">{el.room_name}</h3>
-                <div className="flex items-center justify-between mt-2">
-                  <p>{el.owner.username}</p>
-                  <span className="text-gray-400 text-xs">{el.is_private ? '비공개' : '공개'}</span>
-                  {el.is_private && <i className="fas fa-lock text-gray-400"></i>}
+                <div className="flex items-center justify-between mt-0 ">
+                  <p className="text-blue-600">{el.owner.username}</p>
+
+                  {el.is_private ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 text-blue-600 hover:text-blue-900"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16 11V7a4 4 0 00-8 0v4M5 11h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"
+                      />
+                    </svg>
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
             </div>
