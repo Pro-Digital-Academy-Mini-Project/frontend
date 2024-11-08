@@ -190,7 +190,7 @@ export default function TimelineChat({ roomId, currentTime }) {
               </div>
 
               {/* 메시지 내용 */}
-              <div className="bg-gray-800 p-2 rounded-lg">
+              <div className="bg-gray-800 p-2 rounded-lg ">
                 <div className="text-sm font-semibold">{comment.username}</div>
                 <div
                   className="text-xs text-gray-400 cursor-pointer"
