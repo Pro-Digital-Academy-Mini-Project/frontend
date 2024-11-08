@@ -71,15 +71,15 @@ export default function RoomPage() {
           <PrivateModal show={show} handleAuth={handleAuth} handlePasswordSubmit={handlePasswordSubmit} />
         </div>
       ) : (
-        // public or 비밀번호 확인 후 기존 페이지
-        <div className="flex h-screen bg-black">
+        // public or 비밀번호 확인 후 기존 페이
+        <div className="flex flex-col h-dvh bg-black md:flex-row">
           {/* Video section - takes up 70% of the width */}
-          <div className="w-[75%] h-full">
+          <div className="md:w-[75%] md:h-full w-full h-1/2">
             <VideoPage video_id={videoId} updateCurrentTime={updateCurrentTime} />
           </div>
 
           {/* Chat section - takes up 30% of the width */}
-          <div className="w-[25%] h-full border-l border-gray-800">
+          <div className="md:w-[25%] md:h-full border-l border-gray-800 w-full h-1/2">
             <ChattingPage roomId={roomId} currentTime={currentTime} setCurrentTime={setCurrentTime} />
           </div>
         </div>
