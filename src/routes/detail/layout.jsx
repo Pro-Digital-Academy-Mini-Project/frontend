@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 export default function BoardLayout() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-black">
       {/* Header/Navbar */}
       <MyNavbar brandTitle="My-React-Board" />
 
