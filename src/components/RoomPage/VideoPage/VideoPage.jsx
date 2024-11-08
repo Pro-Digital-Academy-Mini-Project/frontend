@@ -27,7 +27,7 @@ export default function VideoPage({ video_id, updateCurrentTime }) {
     const interval = setInterval(() => {
       getCurrentTime();
     }, 100);
-    console.log('video_id ', video_id);
+    // console.log('video_id ', video_id);
     return () => clearInterval(interval);
   }, []);
 

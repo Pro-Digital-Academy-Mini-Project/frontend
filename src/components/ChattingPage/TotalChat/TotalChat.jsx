@@ -47,7 +47,7 @@ export default function TotalChat({ roomId }) {
   }, [roomId]);
 
   return (
-    <div>
+    <div className="flex flex-col h-screen text-white">
       <div
         style={{
           border: '1px solid #ccc',
