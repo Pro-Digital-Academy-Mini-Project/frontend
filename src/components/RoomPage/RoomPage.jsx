@@ -44,7 +44,7 @@ export default function RoomPage() {
   // 비밀번호 확인
   const handlePasswordSubmit = async (password) => {
     try {
-      const response = await axios.post(`${BASE_URL}/rooms/verify-password`, {
+      const response = await axios.post(`${BASE_URL}/api/rooms/verify-password`, {
         roomId: roomInfo.roomId,
         password: password,
       });
