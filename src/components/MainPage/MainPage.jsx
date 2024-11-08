@@ -19,11 +19,6 @@ export default function MainPage() {
 
   useEffect(() => {
     searchRooms();
-    // setUserName(localStorage.getItem('username'));
-  }, []);
-
-  useEffect(() => {
-    searchRooms();
   }, [page]);
 
   const moveToRoom = (id) => {
