@@ -3,11 +3,13 @@ import { MyNavbar } from '../../components/MyNavbar';
 import { MyFooter } from '../../components/MyFooter';
 import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 export default function BoardLayout() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
       {/* Header/Navbar */}
+      <ToastContainer />
       <MyNavbar brandTitle="My-React-Board" />
 
       {/* Main Content */}

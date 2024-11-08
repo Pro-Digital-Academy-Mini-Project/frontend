@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../lib/api/api';
+import { toast } from 'react-toastify';
 import { IMG_URL } from '../../lib/img';
 
 export default function SignUpPage() {
@@ -23,7 +24,7 @@ export default function SignUpPage() {
 
       // 회원가입 성공 시
       setSuccess('회원가입 성공!'); // 성공 메시지 설정
-      alert('회원가입이 완료되었습니다!'); // 알림 추가
+      toast('회원가입이 완료되었습니다!'); // 알림 추가
 
       // 예: 로그인 페이지로 리다이렉트
       navigate('/login'); // 로그인 페이지로 리다이렉트
