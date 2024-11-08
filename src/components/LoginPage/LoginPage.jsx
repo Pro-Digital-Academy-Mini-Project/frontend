@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { BASE_URL } from '../../lib/api/api';
+import { BASE_URL } from '../../lib/api/api.js';
 import { IMG_URL } from '../../lib/img';
 
 export default function LoginPage() {

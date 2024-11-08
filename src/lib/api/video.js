@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from './api';
+import { BASE_URL } from './api.js';
 
 const getVideos = async () => {
   const response = await axios.get(`${BASE_URL}/api/video`);
