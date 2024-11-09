@@ -19,6 +19,7 @@ export default function MakeRoomModal(props) {
 
   const makeRoom = async () => {
     const video_id = extractVideoId(videoUrl);
+    const user_name = localStorage.getItem('username');
     if (!roomInfo.name.trim()) {
       toast.error('방 제목을 입력해주세요');
       return;
@@ -35,11 +36,14 @@ export default function MakeRoomModal(props) {
       toast.error('유효하지 않은 youtube url입니다');
       return;
     }
-
+    if (!user_name) {
+      toast.error('로그인 후 이용해주세요');
+      return;
+    }
     const updatedRoomInfo = {
       ...roomInfo,
       video_url_id: video_id, // videoUrl에서 추출
-      owner_name: localStorage.getItem('username'), // 로컬 스토리지에서 가져오기
+      owner_name: user_name, // 로컬 스토리지에서 가져오기
     };
     setRoomInfo(updatedRoomInfo);
 
