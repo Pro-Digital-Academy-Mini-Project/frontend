@@ -151,7 +151,7 @@ export default function TimelineChat({ roomId, currentTime }) {
   return (
     <div className="flex flex-col h-screen text-white">
       {/* 채팅 메시지 목록 (내부 스크롤 적용) */}
-      <div ref={messageContainerRef} className="flex-grow overflow-y-auto p-3 space-y-4 h-96 scrollbar-hide">
+      <div ref={messageContainerRef} className="flex-grow overflow-y-auto p-3 space-y-4 md:h-96 h-40 scrollbar-hide">
         {visibleComments.map((comment, index) => (
           <div key={index} className={`flex ${comment.username === username ? 'justify-end' : ''}`}>
             <div
