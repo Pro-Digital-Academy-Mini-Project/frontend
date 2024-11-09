@@ -18,31 +18,56 @@ export default function MakeRoomModal(props) {
   const navigate = useNavigate();
 
   const makeRoom = async () => {
+    const video_id = extractVideoId(videoUrl);
+    const user_name = localStorage.getItem('username');
+    if (!roomInfo.name.trim()) {
+      toast.error('방 제목을 입력해주세요');
+      return;
+    }
+    if (!videoUrl.trim()) {
+      toast.error('YouTube URL을 입력해주세요');
+      return;
+    }
+    if (roomInfo.is_private && !roomInfo.password.trim()) {
+      toast.error('비공개 방의 경우 비밀번호를 입력해주세요');
+      return;
+    }
+    if (video_id == 'Invalid YouTube URL') {
+      toast.error('유효하지 않은 youtube url입니다');
+      return;
+    }
+    if (!user_name) {
+      toast.error('로그인 후 이용해주세요');
+      return;
+    }
     const updatedRoomInfo = {
       ...roomInfo,
-      video_url_id: extractVideoId(videoUrl), // videoUrl에서 추출
-      owner_name: localStorage.getItem('username'), // 로컬 스토리지에서 가져오기
+      video_url_id: video_id, // videoUrl에서 추출
+      owner_name: user_name, // 로컬 스토리지에서 가져오기
     };
     setRoomInfo(updatedRoomInfo);
 
     const response = await postRooms(updatedRoomInfo);
-
     if (response) {
-      //response로 room_id만 받음
-      console.log(response);
-      toast('성공적으로 방이 생성되었습니다');
-      navigate(`/room/${response}`);
+      toast('성공적으로 방이 생성되었습니다', {
+        autoClose: 2000,
+        onClose: () => navigate(`/room/${response}`),
+      });
     } else {
-      toast('방 생성에 실패했습니다...');
-      navigate('/');
+      toast('방 생성에 실패했습니다...', {
+        autoClose: 2000,
+        onClose: () => navigate('/'),
+      });
     }
   };
 
   function extractVideoId(url) {
-    const regex =
-      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)?|youtu\.be\/)([^&\n?#]+)/;
+    if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
+      return 'Invalid YouTube URL';
+    }
+    const regex = /v=([^&]+)/;
     const match = url.match(regex);
-    return match ? match[1] : null;
+    return match ? match[1] : 'Invalid YouTube URL';
   }
 
   return (

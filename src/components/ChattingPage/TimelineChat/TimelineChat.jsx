@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './TimelineChat.css';
 import { socket } from '../ChattingPage';
-import { BASE_URL } from '../../../lib/api/api.js';
+import { BASE_URL } from '../../../lib/api/api';
+import { toast } from 'react-toastify';
 
 export default function TimelineChat({ roomId, currentTime }) {
   const [message, setMessage] = useState('');
@@ -56,6 +57,12 @@ export default function TimelineChat({ roomId, currentTime }) {
 
   const sendMessage = async (e) => {
     e.preventDefault();
+
+    if (!username) {
+      toast.error('로그인 후 사용해 주세요.');
+      return;
+    }
+
     if (message && currentRoomId) {
       const newTimelineComment = {
         username: username,
@@ -64,7 +71,6 @@ export default function TimelineChat({ roomId, currentTime }) {
         content: message,
       };
 
-      console.log(newTimelineComment);
       try {
         // DB에 저장
         await axios.post(`${BASE_URL}/api/timelinecomment`, newTimelineComment);
@@ -78,6 +84,12 @@ export default function TimelineChat({ roomId, currentTime }) {
         setMessage('');
       } catch (error) {
         console.error('댓글 저장 실패:', error);
+        toast.error('댓글을 저장하지 못했습니다. 다시 시도해 주세요.');
+
+        // Optional: Delay navigation or other actions to ensure the toast is displayed
+        setTimeout(() => {
+          // Perform any actions like navigation or state updates here
+        }, 2000); // 3-second delay to ensure toast is shown
       }
     }
   };
