@@ -33,6 +33,12 @@ export default function PrivateModal(props) {
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    props.handlePasswordSubmit(password);
+                  }
+                }}
               />
             </Form.Group>
           </Form>
