@@ -40,11 +40,11 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="absolute inset-0 h-screen flex flex-col bg-black bg-opacity-90 text-white overflow-hidden">
+      <div className="absolute inset-0 h-screen flex flex-col bg-black bg-opacity-50 text-white overflow-hidden">
         <div
           className="flex-1 flex items-center justify-center  relative bg-cover bg-center"
           style={{
-            backgroundImage: `url("/img/youtube-bg.jpg")`,
+            backgroundImage: `url("/img/bg-youtube.jpg")`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
           }}
