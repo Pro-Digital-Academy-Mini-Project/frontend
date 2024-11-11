@@ -5,11 +5,13 @@ import axios from 'axios';
 import MessageInput from './MessageInput';
 import { socket } from '../ChattingPage';
 import { BASE_URL } from '../../../lib/api/api.js';
+import { toast } from 'react-toastify';
 
 export default function TotalChat({ roomId }) {
   const [messages, setMessages] = useState([]);
   const messageContainerRef = useRef(null);
   const [username] = useState(localStorage.getItem('username'));
+  const [animatedCommentId, setAnimatedCommentId] = useState(null);
 
   //초기 전체 댓글 로드
   useEffect(() => {
@@ -37,6 +39,7 @@ export default function TotalChat({ roomId }) {
             room_id: data.roomId,
             content: data.content,
             created_at: data.created_at,
+            likes: data.likes,
           },
         ];
       });
@@ -101,6 +104,22 @@ export default function TotalChat({ roomId }) {
     }
   }
 
+  const handleLike = async (created_at) => {
+    try {
+      await axios.put(`${BASE_URL}/api/Comment/like`, {
+        roomId: roomId,
+        created_at: created_at,
+      });
+      // 댓글 목록을 다시 로드하여 업데이트된 좋아요 수를 반영
+      const response = await axios.get(`${BASE_URL}/api/Comment/${roomId}`);
+      setMessages(response.data);
+      setAnimatedCommentId(created_at);
+    } catch (error) {
+      console.error('좋아요 추가 실패:', error);
+      toast.error('좋아요를 추가하지 못했습니다. 다시 시도해 주세요.');
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen text-white">
       {/* 채팅 메시지 목록 (내부 스크롤 적용) */}
@@ -129,6 +148,13 @@ export default function TotalChat({ roomId }) {
                   <div className="flex  items-center text-xs text-gray-400 cursor-pointer">
                     {formatDate(comment.created_at)}
                   </div>
+                  <button
+                    onClick={() => handleLike(comment.created_at)}
+                    className={`text-pink-500 transition-transform duration-300 ${animatedCommentId === comment.created_at ? 'animate-bounce-up' : ''}`}
+                    onAnimationEnd={() => setAnimatedCommentId(null)}
+                  >
+                    ❤️{comment.likes || 0}
+                  </button>
                 </div>
                 <div className="mt-1">{comment.content}</div>
               </div>
