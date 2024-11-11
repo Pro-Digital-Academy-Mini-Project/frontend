@@ -3,23 +3,28 @@ import { getRooms } from '../../lib/api/room';
 import MakeRoomModal from './MakeRoomModal';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { removeRoom } from '../../lib/api/room';
+import { toast } from 'react-toastify';
 
 export default function MainPage() {
   const [roomArr, setRoomArr] = useState([]);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  // const [username, setUserName] = useState('');
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const { username } = useAuth();
-
   useEffect(() => {
     searchRooms();
   }, [page]);
+
+  useEffect(() => {
+    // 컴포넌트가 마운트된 후 isLoaded를 true로 변경하여 애니메이션 시작
+    setIsLoaded(true);
+  }, []);
 
   const moveToRoom = (id) => {
     //room id 전달
@@ -30,12 +35,18 @@ export default function MainPage() {
     const data = await getRooms(page, search);
     setRoomArr(data);
   };
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    // 컴포넌트가 마운트된 후 isLoaded를 true로 변경하여 애니메이션 시작
-    setIsLoaded(true);
-  }, []);
+  const deleteRoom = async (roomId) => {
+    const data = await removeRoom(roomId);
+    console.log(data);
+
+    if (data === 'Room deleted successfully') {
+      toast.success('성공적으로 방을 삭제했습니다!');
+      window.location.reload(); // Refresh the page
+    } else {
+      toast.error('방 삭제에 실패했습니다...');
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
@@ -115,25 +126,51 @@ export default function MainPage() {
                     <h3 className="text-lg font-semibold text-white">{el.room_name}</h3>
                     <div className="flex items-center justify-between mt-0">
                       <p className="text-blue-600">{el.owner.username}</p>
-
-                      {el.is_private ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 text-blue-600 hover:text-blue-900"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 11h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"
-                          />
-                        </svg>
-                      ) : (
-                        ''
-                      )}
+                      <div className="flex gap-2">
+                        {el.is_private ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 text-blue-600 hover:text-blue-900"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16 11V7a4 4 0 00-8 0v4M5 11h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"
+                            />
+                          </svg>
+                        ) : (
+                          ''
+                        )}
+                        {username == el.owner.username ? (
+                          <button
+                            onClick={(e) => {
+                              deleteRoom(el._id);
+                              e.stopPropagation();
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-5 text-blue-600 hover:text-blue-900"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 9l1 10a2 2 0 002 2h6a2 2 0 002-2l1-10M4 7h16M10 11v6M14 11v6M9 4h6a1 1 0 011 1v2H8V5a1 1 0 011-1z"
+                              />
+                            </svg>
+                          </button>
+                        ) : (
+                          ''
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

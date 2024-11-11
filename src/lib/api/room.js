@@ -33,4 +33,15 @@ async function postRooms(room) {
   }
 }
 
-export { getRooms, postRooms, getRoomById };
+const removeRoom = async (roomId) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/api/rooms/${roomId}`);
+    return response.data.message;
+    // Optional: handle any additional logic after successful deletion
+  } catch (error) {
+    console.error('Error deleting room:', error.response ? error.response.data : error.message);
+    return error.message;
+  }
+};
+
+export { getRooms, postRooms, getRoomById, removeRoom };
