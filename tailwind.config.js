@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       animation: {
         'bounce-up': 'bounce-up 0.3s ease forwards',
+        'wave-move': 'wave-move 12s linear infinite',
       },
       keyframes: {
         'bounce-up': {
@@ -12,9 +13,14 @@ module.exports = {
           '50%': { transform: 'translateY(-10px)' },
           '100%': { transform: 'translateY(0)' },
         },
+        'wave-move': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+
+        },
       },
-    },
-  },
-  variants: {},
-  plugins: [require('tailwind-scrollbar-hide')],
-};
+      variants: {},
+      plugins: [require('tailwind-scrollbar-hide')],
+    }
+  }
+}
