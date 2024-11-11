@@ -74,7 +74,9 @@ export default function RoomPage() {
         // public or 비밀번호 확인 후 기존 페이
         <div className="flex flex-col h-dvh bg-black md:flex-row">
           {/* Video section - takes up 70% of the width */}
-          <div className="md:w-[75%] md:h-full w-full h-1/2">
+
+          <div className="md:w-[75%] md:h-full w-full h-1/2 flex flex-col">
+            <div className="text-white p-3 font-semibold">{roomInfo.room_name}</div>
             <VideoPage video_id={videoId} updateCurrentTime={updateCurrentTime} />
           </div>
 
