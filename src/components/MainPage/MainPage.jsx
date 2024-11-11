@@ -48,14 +48,21 @@ export default function MainPage() {
     }
   };
 
+  const truncateText = (text, maxLength = 18) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <div
-        className={`flex-grow lg:mx-20 lg:my-20 mx-10 my-10 transform transition-all duration-1000 ease-in-out ${
+        className={`flex-grow xl:mx-20 xl:my-20 mx-10 my-10 transform transition-all duration-1000 ease-in-out ${
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}
       >
-        <div className="flex-grow lg:mx-36 lg:my-20 sm:mx-10 sm:my-10">
+        <div className="flex-grow xl:mx-36 xl:my-20 sm:mx-10 sm:my-10">
           {/* Header */}
           <div className="flex flex-col items-center sm:mt-10 mt-20">
             <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4 text-center">
@@ -106,8 +113,9 @@ export default function MainPage() {
           </div>
 
           {/* Room List */}
-          <div className="my-10 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
+          <div className="my-10 grid gap-6 sm:grid-cols-1 md:grid-cols-2 2xl:grid-cols-3  justify-items-center">
             {roomArr.map((el, id) => {
+              const room_name = truncateText(el.room_name);
               return (
                 <div
                   key={id}
@@ -123,7 +131,7 @@ export default function MainPage() {
 
                   {/* 텍스트 및 정보 부분 */}
                   <div className="bg-neutral-900 h-2/6 p-3 flex flex-col">
-                    <h3 className="text-lg font-semibold text-white">{el.room_name}</h3>
+                    <h3 className="text-lg font-semibold text-white">{room_name}</h3>
                     <div className="flex items-center justify-between mt-0">
                       <p className="text-blue-600">{el.owner.username}</p>
                       <div className="flex gap-2">
