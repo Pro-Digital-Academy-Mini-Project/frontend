@@ -11,6 +11,7 @@ export default function TimelineChat({ roomId, currentTime }) {
   const [currentRoomId, setCurrentRoomId] = useState(null);
   const [visibleComments, setVisibleComments] = useState([]);
   const [username] = useState(localStorage.getItem('username'));
+  const [animatedCommentId, setAnimatedCommentId] = useState(null); // 애니메이션을 위한 상태 추가
   const messageContainerRef = useRef(null);
 
   // 초기 타임라인 댓글 로드
@@ -148,6 +149,23 @@ export default function TimelineChat({ roomId, currentTime }) {
     // seekToTime(timestamp);
   };
 
+  const handleLike = async (timestamp, content) => {
+    try {
+      await axios.put(`${BASE_URL}/api/timelinecomment/like`, {
+        timestamp: timestamp,
+        content: content,
+        roomId: currentRoomId,
+      });
+      // 댓글 목록을 다시 로드하여 업데이트된 좋아요 수를 반영
+      const response = await axios.get(`${BASE_URL}/api/timelinecomment/${currentRoomId}`);
+      const sortedComments = response.data.sort((a, b) => a.timestamp - b.timestamp);
+      setTimelineComments(sortedComments);
+    } catch (error) {
+      console.error('좋아요 추가 실패:', error);
+      toast.error('좋아요를 추가하지 못했습니다. 다시 시도해 주세요.');
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen text-white">
       {/* 채팅 메시지 목록 (내부 스크롤 적용) */}
@@ -179,6 +197,17 @@ export default function TimelineChat({ roomId, currentTime }) {
                   >
                     {formatTimestamp(comment.timestamp)}
                   </div>
+
+                  <button
+                    onClick={() => {
+                      handleLike(comment.timestamp, comment.content);
+                      setAnimatedCommentId(comment.timestamp); // 애니메이션 시작
+                    }}
+                    className={`text-pink-500 transition-transform duration-300 ${animatedCommentId === comment.timestamp ? 'animate-bounce-up' : ''}`}
+                    onAnimationEnd={() => setAnimatedCommentId(null)} // 애니메이션 끝나면 상태 초기화
+                  >
+                    ❤️{comment.likes || 0}
+                  </button>
                 </div>
                 <div className="mt-1">{comment.content}</div>
               </div>

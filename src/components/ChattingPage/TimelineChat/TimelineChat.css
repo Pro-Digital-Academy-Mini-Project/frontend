@@ -61,7 +61,7 @@
 
 .message-item.right .message-content {
   /* background-color: #434343; 사용자 메시지 배경색 */
-  text-align: right;
+  text-align: left;
 }
 
 /* 사용자 아바타 */
