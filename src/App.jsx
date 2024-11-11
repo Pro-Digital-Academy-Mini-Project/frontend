@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ToastContainer } from 'react-toastify';
+import './App.css';
 
 import { AuthProvider } from './components/contexts/AuthContext';
 function App() {
