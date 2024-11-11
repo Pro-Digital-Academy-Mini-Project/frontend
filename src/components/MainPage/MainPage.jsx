@@ -57,6 +57,30 @@ export default function MainPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
+      <div className="fixed inset-x-0 bottom-0 h-64 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 h-full w-[200%] animate-wave-move">
+          <svg
+            className="absolute bottom-0 h-full w-full"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 1200 120"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,0 C150,90 350,0 500,100 C650,200 750,0 900,100 C1050,200 1150,90 1200,0 V120 H0 Z"
+              className="fill-blue-600 opacity-20"
+            ></path>
+            <path
+              d="M0,0 C150,60 350,30 500,80 C650,130 750,30 900,80 C1050,130 1150,60 1200,0 V120 H0 Z"
+              className="fill-blue-600 opacity-30"
+            ></path>
+            <path
+              d="M0,0 C150,30 350,60 500,40 C650,20 750,60 900,40 C1050,20 1150,30 1200,0 V120 H0 Z"
+              className="fill-blue-600 opacity-40"
+            ></path>
+          </svg>
+        </div>
+      </div>
       <div
         className={`flex-grow xl:mx-20 xl:my-20 mx-10 my-10 transform transition-all duration-1000 ease-in-out ${
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
